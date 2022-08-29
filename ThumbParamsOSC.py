@@ -53,6 +53,8 @@ actionSetHandle = openvr.VRInput().getActionSetHandle(config["ActionSetHandle"])
 # Set up OpenVR Action Handles
 leftTrigger = openvr.VRInput().getActionHandle(config["TriggerActions"]["lefttrigger"])
 rightTrigger = openvr.VRInput().getActionHandle(config["TriggerActions"]["righttrigger"])
+leftGrip = openvr.VRInput().getActionHandle(config["TriggerActions"]["leftgrip"])
+rightGrip = openvr.VRInput().getActionHandle(config["TriggerActions"]["rightgrip"])
 buttonActionHandles = []
 for k in config["ButtonActions"]:
     buttonActionHandles.append(openvr.VRInput().getActionHandle(config["ButtonActions"][k]))
@@ -82,6 +84,8 @@ def handle_input():
     # Get values for TriggerLeft and TriggerRight (0.0-1.0)
     _lefttriggervalue = openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
     _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
+    _leftgripvalue = openvr.VRInput().getAnalogActionData(leftGrip, openvr.k_ulInvalidInputValueHandle).x
+    _rightgripvalue = openvr.VRInput().getAnalogActionData(rightGrip, openvr.k_ulInvalidInputValueHandle).x
 
     # Send data via OSC
     oscClient.send_message(config["ParametersInt"]["LeftThumb"], int(_leftthumb))
@@ -89,6 +93,8 @@ def handle_input():
 
     oscClient.send_message(config["ParametersFloat"]["LeftTrigger"], float(_lefttriggervalue))
     oscClient.send_message(config["ParametersFloat"]["RightTrigger"], float(_righttriggervalue))
+    oscClient.send_message(config["ParametersFloat"]["LeftGrip"], float(_leftgripvalue))
+    oscClient.send_message(config["ParametersFloat"]["RightGrip"], float(_rightgripvalue))
 
     if config["SendBools"]:
         oscClient.send_message(config["ParametersBool"]["LeftAButton"], bool(int(_strinputs[0])))
@@ -99,6 +105,9 @@ def handle_input():
         oscClient.send_message(config["ParametersBool"]["RightBButton"], bool(int(_strinputs[5])))
         oscClient.send_message(config["ParametersBool"]["RightTrackPad"], bool(int(_strinputs[6])))
         oscClient.send_message(config["ParametersBool"]["RightThumbStick"], bool(int(_strinputs[7])))
+
+        oscClient.send_message(config["ParametersBool"]["LeftTriggerTouch"], bool(int(_strinputs[8])))
+        oscClient.send_message(config["ParametersBool"]["RightTriggerTouch"], bool(int(_strinputs[9])))
 
         oscClient.send_message(config["ParametersBool"]["LeftABButtons"], bool(int(_strinputs[0])) & bool(int(_strinputs[1])))
         oscClient.send_message(config["ParametersBool"]["RightABButtons"], bool(int(_strinputs[4])) & bool(int(_strinputs[5])))
@@ -113,6 +122,8 @@ def handle_input():
         print("--------- Floats -----------")
         print("LeftTrigger:\t", f'{_lefttriggervalue:.6f}')
         print("RightTrigger:\t", f'{_righttriggervalue:.6f}')
+        print("LeftGrip:\t", f'{_leftgripvalue:.6f}')
+        print("RightGrip:\t", f'{_rightgripvalue:.6f}')
         if config["SendBools"]:
             print("--------- Bools ------------")
             print("LeftAButton:\t", bool(int(_strinputs[0])), " ")
@@ -125,6 +136,8 @@ def handle_input():
             print("RightABButtons:\t", bool(int(_strinputs[4])) & bool(int(_strinputs[5])), " ")
             print("RightTrackPad:\t", bool(int(_strinputs[6])), " ")
             print("RightThumbStick:", bool(int(_strinputs[7])), " ")
+            print("LeftTriggerTouch:", bool(int(_strinputs[8])), " ")
+            print("RightTriggerTouch:", bool(int(_strinputs[9])), " ")
 
 
 cls()

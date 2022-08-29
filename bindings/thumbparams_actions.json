@@ -19,6 +19,22 @@
       "type": "vector1"
     },
     {
+      "name": "/actions/thumbparams/in/leftgrip",
+      "type": "vector1"
+    },
+    {
+      "name": "/actions/thumbparams/in/rightgrip",
+      "type": "vector1"
+    },
+    {
+      "name": "/actions/thumbparams/in/lefttriggertouch",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/thumbparams/in/righttriggertouch",
+      "type": "boolean"
+    },
+    {
       "name": "/actions/thumbparams/in/leftstick",
       "type": "boolean"
     },

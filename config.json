@@ -14,12 +14,16 @@
                 "rightabutton": "/actions/thumbparams/in/rightabutton",
                 "rightbbutton": "/actions/thumbparams/in/rightbbutton",
                 "righttrackpad": "/actions/thumbparams/in/righttrackpad",
-                "rightstick": "/actions/thumbparams/in/rightstick"
+                "rightstick": "/actions/thumbparams/in/rightstick",
+                "lefttriggertouch": "/actions/thumbparams/in/lefttriggertouch",
+                "righttriggertouch": "/actions/thumbparams/in/righttriggertouch"
         },
         "TriggerActions":
         {
                 "lefttrigger": "/actions/thumbparams/in/lefttrigger",
-                "righttrigger": "/actions/thumbparams/in/righttrigger"
+                "righttrigger": "/actions/thumbparams/in/righttrigger",
+                "leftgrip": "/actions/thumbparams/in/leftgrip",
+                "rightgrip": "/actions/thumbparams/in/rightgrip"
         },
         "ParametersInt":
         {
@@ -29,7 +33,9 @@
         "ParametersFloat":
         {
                 "LeftTrigger": "/avatar/parameters/LeftTrigger",
-                "RightTrigger": "/avatar/parameters/RightTrigger"
+                "RightTrigger": "/avatar/parameters/RightTrigger",
+                "LeftGrip": "/avatar/parameters/LeftGrip",
+                "RightGrip": "/avatar/parameters/RightGrip"
         },
         "ParametersBool":
         {
@@ -42,6 +48,8 @@
                 "RightTrackPad": "/avatar/parameters/RightTrackPad",
                 "RightThumbStick": "/avatar/parameters/RightThumbStick",
                 "LeftABButtons": "/avatar/parameters/LeftABButtons",
-                "RightABButtons": "/avatar/parameters/RightABButtons"
+                "RightABButtons": "/avatar/parameters/RightABButtons",
+                "LeftTriggerTouch": "/avatar/parameters/LeftTriggerTouch",
+                "RightTriggerTouch": "/avatar/parameters/RightTriggerTouch"
         }
 }
