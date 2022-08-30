@@ -1,55 +1,118 @@
 {
         "IP": "127.0.0.1",
         "Port": 9000,
-        "SendBools": true,
         "BindingsFolder": "bindings",
         "ActionManifestFile": "thumbparams_actions.json",
         "ActionSetHandle": "/actions/thumbparams",
-        "ButtonActions": 
-        {
-                "leftabutton": "/actions/thumbparams/in/leftabutton",
-                "leftbbutton": "/actions/thumbparams/in/leftbbutton",
-                "lefttrackpad": "/actions/thumbparams/in/lefttrackpad",
-                "leftstick": "/actions/thumbparams/in/leftstick",
-                "rightabutton": "/actions/thumbparams/in/rightabutton",
-                "rightbbutton": "/actions/thumbparams/in/rightbbutton",
-                "righttrackpad": "/actions/thumbparams/in/righttrackpad",
-                "rightstick": "/actions/thumbparams/in/rightstick",
-                "lefttriggertouch": "/actions/thumbparams/in/lefttriggertouch",
-                "righttriggertouch": "/actions/thumbparams/in/righttriggertouch"
-        },
-        "TriggerActions":
-        {
-                "lefttrigger": "/actions/thumbparams/in/lefttrigger",
-                "righttrigger": "/actions/thumbparams/in/righttrigger",
-                "leftgrip": "/actions/thumbparams/in/leftgrip",
-                "rightgrip": "/actions/thumbparams/in/rightgrip"
-        },
-        "ParametersInt":
-        {
-                "LeftThumb": "/avatar/parameters/LeftThumb",
-                "RightThumb": "/avatar/parameters/RightThumb"
-        },
-        "ParametersFloat":
-        {
-                "LeftTrigger": "/avatar/parameters/LeftTrigger",
-                "RightTrigger": "/avatar/parameters/RightTrigger",
-                "LeftGrip": "/avatar/parameters/LeftGrip",
-                "RightGrip": "/avatar/parameters/RightGrip"
-        },
-        "ParametersBool":
-        {
-                "LeftAButton": "/avatar/parameters/LeftAButton",
-                "LeftBButton": "/avatar/parameters/LeftBButton",
-                "LeftTrackPad": "/avatar/parameters/LeftTrackPad",
-                "LeftThumbStick": "/avatar/parameters/LeftThumbStick",
-                "RightAButton": "/avatar/parameters/RightAButton",
-                "RightBButton": "/avatar/parameters/RightBButton",
-                "RightTrackPad": "/avatar/parameters/RightTrackPad",
-                "RightThumbStick": "/avatar/parameters/RightThumbStick",
-                "LeftABButtons": "/avatar/parameters/LeftABButtons",
-                "RightABButtons": "/avatar/parameters/RightABButtons",
-                "LeftTriggerTouch": "/avatar/parameters/LeftTriggerTouch",
-                "RightTriggerTouch": "/avatar/parameters/RightTriggerTouch"
-        }
-}
+    
+        "FloatParams": [
+            {
+                "OSCName": "LeftTrigger",
+                "Action": "/actions/thumbparams/in/lefttrigger"
+            },
+            {
+                "OSCName": "RightTrigger",
+                "Action": "/actions/thumbparams/in/righttrigger"
+            },
+            {
+                "OSCName": "LeftGrip",
+                "Action": "/actions/thumbparams/in/leftgrip"
+            },
+            {
+                "OSCName": "RightGrip",
+                "Action": "/actions/thumbparams/in/rightgrip"
+            }
+        ],
+    
+        "BoolParams": [
+            {
+                "OSCName": "LeftAButton",
+                "Action": "/actions/thumbparams/in/leftabutton",
+                "Ignore": true
+            },
+            {
+                "OSCName": "LeftBButton",
+                "Action": "/actions/thumbparams/in/leftbbutton",
+                "Ignore": true
+            },
+            {
+                "OSCName": "LeftTrackPad",
+                "Action": "/actions/thumbparams/in/lefttrackpad",
+                "Ignore": true
+            },
+            {
+                "OSCName": "LeftThumbStick",
+                "Action": "/actions/thumbparams/in/leftstick",
+                "Ignore": true
+            },
+            {
+                "OSCName": "RightAButton",
+                "Action": "/actions/thumbparams/in/rightabutton",
+                "Ignore": true
+            },
+            {
+                "OSCName": "RightBButton",
+                "Action": "/actions/thumbparams/in/rightbbutton",
+                "Ignore": true
+            },
+            {
+                "OSCName": "RightTrackPad",
+                "Action": "/actions/thumbparams/in/righttrackpad",
+                "Ignore": true
+            },
+            {
+                "OSCName": "RightThumbStick",
+                "Action": "/actions/thumbparams/in/rightstick",
+                "Ignore": true
+            },
+            {
+                "OSCName": "LeftTriggerTouch",
+                "Action": "/actions/thumbparams/in/lefttriggertouch"
+            },
+            {
+                "OSCName": "RightTriggerTouch",
+                "Action": "/actions/thumbparams/in/righttriggertouch"
+            }
+        ],
+    
+        "ComboParams": [
+            {
+                "OSCName": "LeftThumb",
+                "Type": "index_from_bools",
+                "Actions": [
+                    "/actions/thumbparams/in/leftabutton",
+                    "/actions/thumbparams/in/leftbbutton",
+                    "/actions/thumbparams/in/lefttrackpad",
+                    "/actions/thumbparams/in/leftstick"
+                ]
+            },
+            {
+                "OSCName": "RightThumb",
+                "Type": "index_from_bools",
+                "Actions": [
+                    "/actions/thumbparams/in/rightabutton",
+                    "/actions/thumbparams/in/rightbbutton",
+                    "/actions/thumbparams/in/righttrackpad",
+                    "/actions/thumbparams/in/rightstick"
+                ]
+            },
+            {
+                "OSCName": "LeftABButtons",
+                "Type": "bool_and",
+                "Actions": [
+                    "/actions/thumbparams/in/leftabutton",
+                    "/actions/thumbparams/in/leftbbutton"
+                ],
+                "Ignore": true
+            },
+            {
+                "OSCName": "RightABButtons",
+                "Type": "bool_and",
+                "Actions": [
+                    "/actions/thumbparams/in/rightabutton",
+                    "/actions/thumbparams/in/rightbbutton"
+                ],
+                "Ignore": true
+            }
+        ]
+    }

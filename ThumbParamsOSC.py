@@ -51,13 +51,42 @@ openvr.VRInput().setActionManifestPath(action_path)
 actionSetHandle = openvr.VRInput().getActionSetHandle(config["ActionSetHandle"])
 
 # Set up OpenVR Action Handles
-leftTrigger = openvr.VRInput().getActionHandle(config["TriggerActions"]["lefttrigger"])
-rightTrigger = openvr.VRInput().getActionHandle(config["TriggerActions"]["righttrigger"])
-leftGrip = openvr.VRInput().getActionHandle(config["TriggerActions"]["leftgrip"])
-rightGrip = openvr.VRInput().getActionHandle(config["TriggerActions"]["rightgrip"])
-buttonActionHandles = []
-for k in config["ButtonActions"]:
-    buttonActionHandles.append(openvr.VRInput().getActionHandle(config["ButtonActions"][k]))
+
+# sets up a dict with osc name and action handle
+getActionHandles = lambda cfg : [
+    {
+        "OSCName": param["OSCName"],
+        "ActionHandle": openvr.VRInput().getActionHandle(param["Action"])
+    } for param in cfg if not ("Ignore" in param and param["Ignore"] == True)
+]
+
+floatActionHandles = getActionHandles(config["FloatParams"])
+boolActionHandles = getActionHandles(config["BoolParams"])
+
+# dict with osc name, type of combo action and a list of action handles to go with it
+comboActionHandles = [
+    {
+        "OSCName": param["OSCName"],
+        "Type": param["Type"],
+        "ActionHandles": [openvr.VRInput().getActionHandle(act) for act in param["Actions"]]
+    } for param in config["ComboParams"] if not ("Ignore" in param and param["Ignore"] == True)
+]
+
+# used for debug print
+max_name_length = max([len(x["OSCName"]) for x in floatActionHandles + boolActionHandles + comboActionHandles])
+
+
+####################################################################################################
+
+# helper function
+def get_digital(actionHandle : openvr.VRActionHandle_t) -> bool:
+    """Shorthand for getDigitalActionData(...)"""
+    return bool(openvr.VRInput().getDigitalActionData(actionHandle, openvr.k_ulInvalidInputValueHandle).bState)
+
+# helper function
+def get_analog(actionHandle : openvr.VRActionHandle_t) -> float:
+    """Shorthand for getAnalogActionData(...)"""
+    return float(openvr.VRInput().getAnalogActionData(actionHandle, openvr.k_ulInvalidInputValueHandle).x)
 
 
 def handle_input():
@@ -72,79 +101,76 @@ def handle_input():
     _actionset.ulActionSet = actionSetHandle
     openvr.VRInput().updateActionState(_actionsets)
 
-    # Get data for all button actions
-    _strinputs = ""
-    for i in buttonActionHandles:
-        _strinputs += str(openvr.VRInput().getDigitalActionData(i, openvr.k_ulInvalidInputValueHandle).bState)
+    # list of messages to be sent to OSC later
+    OSCMsgs = []
 
-    # Get values for leftThumb and rightThumb (0-4)
-    _leftthumb = _strinputs[:4].rfind("1") + 1
-    _rightthumb = _strinputs[4:].rfind("1") + 1
+    # boolean parameters
+    OSCMsgs += [{
+        "OSCName": param["OSCName"], 
+        "Value": get_digital(param["ActionHandle"])
+    } for param in boolActionHandles]
 
-    # Get values for TriggerLeft and TriggerRight (0.0-1.0)
-    _lefttriggervalue = openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
-    _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
-    _leftgripvalue = openvr.VRInput().getAnalogActionData(leftGrip, openvr.k_ulInvalidInputValueHandle).x
-    _rightgripvalue = openvr.VRInput().getAnalogActionData(rightGrip, openvr.k_ulInvalidInputValueHandle).x
+    # float parameters
+    OSCMsgs += [{
+        "OSCName": param["OSCName"], 
+        "Value": get_analog(param["ActionHandle"])
+    } for param in floatActionHandles]
 
-    # Send data via OSC
-    oscClient.send_message(config["ParametersInt"]["LeftThumb"], int(_leftthumb))
-    oscClient.send_message(config["ParametersInt"]["RightThumb"], int(_rightthumb))
+    # int / bool parameters (combos)
+    for param in comboActionHandles:
+        # output dictionary
+        out = {"OSCName": param["OSCName"]}
 
-    oscClient.send_message(config["ParametersFloat"]["LeftTrigger"], float(_lefttriggervalue))
-    oscClient.send_message(config["ParametersFloat"]["RightTrigger"], float(_righttriggervalue))
-    oscClient.send_message(config["ParametersFloat"]["LeftGrip"], float(_leftgripvalue))
-    oscClient.send_message(config["ParametersFloat"]["RightGrip"], float(_rightgripvalue))
-
-    if config["SendBools"]:
-        oscClient.send_message(config["ParametersBool"]["LeftAButton"], bool(int(_strinputs[0])))
-        oscClient.send_message(config["ParametersBool"]["LeftBButton"], bool(int(_strinputs[1])))
-        oscClient.send_message(config["ParametersBool"]["LeftTrackPad"], bool(int(_strinputs[2])))
-        oscClient.send_message(config["ParametersBool"]["LeftThumbStick"], bool(int(_strinputs[3])))
-        oscClient.send_message(config["ParametersBool"]["RightAButton"], bool(int(_strinputs[4])))
-        oscClient.send_message(config["ParametersBool"]["RightBButton"], bool(int(_strinputs[5])))
-        oscClient.send_message(config["ParametersBool"]["RightTrackPad"], bool(int(_strinputs[6])))
-        oscClient.send_message(config["ParametersBool"]["RightThumbStick"], bool(int(_strinputs[7])))
-
-        oscClient.send_message(config["ParametersBool"]["LeftTriggerTouch"], bool(int(_strinputs[8])))
-        oscClient.send_message(config["ParametersBool"]["RightTriggerTouch"], bool(int(_strinputs[9])))
-
-        oscClient.send_message(config["ParametersBool"]["LeftABButtons"], bool(int(_strinputs[0])) & bool(int(_strinputs[1])))
-        oscClient.send_message(config["ParametersBool"]["RightABButtons"], bool(int(_strinputs[4])) & bool(int(_strinputs[5])))
+        pType = param["Type"]
+        if pType == "index_from_bools":
+            # Select the index of a digital action that is true, we use the last true action in the list
+            index = 0
+            for i in range(len(param["ActionHandles"])):
+                if get_digital(param["ActionHandles"][i]):
+                    index = i + 1
+            out["Value"] = index
+        elif pType == "bool_and":
+            # returns true if all listed digital actions are true
+            out["Value"] = all([get_digital(ah) for ah in param["ActionHandles"]])
+        else:
+            raise RuntimeError("combo-type: {} not supported".format(pType))
+        
+        OSCMsgs += [out] # append as an array to append a single element
+    
+    # send all the messages!
+    for msg in OSCMsgs:
+        oscClient.send_message(f'/avatar/parameters/{msg["OSCName"]}', msg["Value"])
 
     # debug output
     if args.debug:
+        ints =   [msg for msg in OSCMsgs if type(msg["Value"]) == int]
+        floats = [msg for msg in OSCMsgs if type(msg["Value"]) == float]
+        bools =  [msg for msg in OSCMsgs if type(msg["Value"]) == bool]
+
+        # dashes in the headers should line up with the data width
+        # as the name length is variable and we use the maximum
+        dashes = '-' * (int((max_name_length+12)/2) - 4)
+
         move(10, 0)
         print("DEBUG OUTPUT:")
-        print("---------- Ints ------------")
-        print("LeftThumb:\t", _leftthumb)
-        print("RightThumb:\t", _rightthumb)
-        print("--------- Floats -----------")
-        print("LeftTrigger:\t", f'{_lefttriggervalue:.6f}')
-        print("RightTrigger:\t", f'{_righttriggervalue:.6f}')
-        print("LeftGrip:\t", f'{_leftgripvalue:.6f}')
-        print("RightGrip:\t", f'{_rightgripvalue:.6f}')
-        if config["SendBools"]:
-            print("--------- Bools ------------")
-            print("LeftAButton:\t", bool(int(_strinputs[0])), " ")
-            print("LeftBButton:\t", bool(int(_strinputs[1])), " ")
-            print("LeftABButtons:\t", bool(int(_strinputs[0])) & bool(int(_strinputs[1])), " ")
-            print("LeftTrackPad:\t", bool(int(_strinputs[2])), " ")
-            print("LeftThumbStick:\t", bool(int(_strinputs[3])), " ")
-            print("RightAButton:\t", bool(int(_strinputs[4])), " ")
-            print("RightBButton:\t", bool(int(_strinputs[5])), " ")
-            print("RightABButtons:\t", bool(int(_strinputs[4])) & bool(int(_strinputs[5])), " ")
-            print("RightTrackPad:\t", bool(int(_strinputs[6])), " ")
-            print("RightThumbStick:", bool(int(_strinputs[7])), " ")
-            print("LeftTriggerTouch:", bool(int(_strinputs[8])), " ")
-            print("RightTriggerTouch:", bool(int(_strinputs[9])), " ")
+        if ints:
+            print(dashes + "- Ints -" + dashes)
+            for m in ints:
+                print(f"{m['OSCName']:<{max_name_length}s} : {m['Value']:d}")
+        if floats:
+            print(dashes + " Floats " + dashes)
+            for m in floats:
+                print(f"{m['OSCName']:<{max_name_length}s} : {m['Value']:.6f}")
+        if bools:
+            print(dashes + "- Bools " + dashes)
+            for m in bools:
+                print(f"{m['OSCName']:<{max_name_length}s} : {str(m['Value'])} ")
 
 
 cls()
 print("ThumbParamsOSC running...\n")
 print("IP:\t\t", IP)
 print("Port:\t\t", PORT)
-print("SendBools:\t", config["SendBools"])
 print("\nYou can minimize this window.")
 print("\nPress CTRL + C to exit or just close the window.")
 
