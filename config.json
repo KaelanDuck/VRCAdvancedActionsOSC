@@ -113,6 +113,26 @@
                     "/actions/thumbparams/in/rightbbutton"
                 ],
                 "Ignore": true
+            },
+            {
+                "OSCName": "LeftThumbTouch",
+                "Type": "bool_or",
+                "Actions": [
+                    "/actions/thumbparams/in/leftabutton",
+                    "/actions/thumbparams/in/leftbbutton",
+                    "/actions/thumbparams/in/lefttrackpad",
+                    "/actions/thumbparams/in/leftstick"  
+                ]
+            },
+            {
+                "OSCName": "RightThumbTouch",
+                "Type": "bool_or",
+                "Actions": [
+                    "/actions/thumbparams/in/rightabutton",
+                    "/actions/thumbparams/in/rightbbutton",
+                    "/actions/thumbparams/in/righttrackpad",
+                    "/actions/thumbparams/in/rightstick"
+                ]
             }
         ]
     }

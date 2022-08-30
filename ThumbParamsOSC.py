@@ -132,6 +132,9 @@ def handle_input():
         elif pType == "bool_and":
             # returns true if all listed digital actions are true
             out["Value"] = all([get_digital(ah) for ah in param["ActionHandles"]])
+        elif pType == "bool_or":
+            # returns true if all listed digital actions are true
+            out["Value"] = any([get_digital(ah) for ah in param["ActionHandles"]])
         else:
             raise RuntimeError("combo-type: {} not supported".format(pType))
         
