@@ -8,87 +8,63 @@ ActionSetHandle: "/actions/thumbparams"
 
 ConnectedParam: VTP_Active
 
-FloatParams:
-- OSCName: LeftTrigger
-  Action: "/actions/thumbparams/in/lefttrigger"
-- OSCName: RightTrigger
-  Action: "/actions/thumbparams/in/righttrigger"
-- OSCName: LeftGrip
-  Action: "/actions/thumbparams/in/leftgrip"
-- OSCName: RightGrip
-  Action: "/actions/thumbparams/in/rightgrip"
-
-BoolParams:
-- OSCName: LeftAButton
-  Action: "/actions/thumbparams/in/leftabutton"
-  Ignore: true
-- OSCName: LeftBButton
-  Action: "/actions/thumbparams/in/leftbbutton"
-  Ignore: true
-- OSCName: LeftTrackPad
-  Action: "/actions/thumbparams/in/lefttrackpad"
-  Ignore: true
-- OSCName: LeftThumbStick
-  Action: "/actions/thumbparams/in/leftstick"
-  Ignore: true
-- OSCName: RightAButton
-  Action: "/actions/thumbparams/in/rightabutton"
-  Ignore: true
-- OSCName: RightBButton
-  Action: "/actions/thumbparams/in/rightbbutton"
-  Ignore: true
-- OSCName: RightTrackPad
-  Action: "/actions/thumbparams/in/righttrackpad"
-  Ignore: true
-- OSCName: RightThumbStick
-  Action: "/actions/thumbparams/in/rightstick"
-  Ignore: true
-- OSCName: LeftTriggerTouch
-  Action: "/actions/thumbparams/in/lefttriggertouch"
-- OSCName: RightTriggerTouch
-  Action: "/actions/thumbparams/in/righttriggertouch"
+Params:
+  LeftTrigger       : float:/in/lefttrigger
+  RightTrigger      : float:/in/righttrigger
+  LeftGrip          : float:/in/leftgrip
+  RightGrip         : float:/in/rightgrip
+  LeftTriggerTouch  : bool:/in/lefttriggertouch
+  RightTriggerTouch : bool:/in/righttriggertouch
+#  LeftAButton       : bool:/in/leftabutton
+#  LeftBButton       : bool:/in/leftbbutton
+#  LeftTrackPad      : bool:/in/lefttrackpad
+#  LeftThumbStick    : bool:/in/leftstick
+#  RightAButton      : bool:/in/rightabutton
+#  RightBButton      : bool:/in/rightbbutton
+#  RightTrackPad     : bool:/in/righttrackpad
+#  RightThumbStick   : bool:/in/rightstick
 
 CustomParams:
 - OSCName: LeftThumb
-  Expression: len(v) - ([True] + v)[::-1].index(True)
+  Expression: len(v) - ([True] + v)[::-1].index(True) # last index of true value, or zero
   Actions:
-  - bool:/actions/thumbparams/in/leftabutton
-  - bool:/actions/thumbparams/in/leftbbutton
-  - bool:/actions/thumbparams/in/lefttrackpad
-  - bool:/actions/thumbparams/in/leftstick
+  - bool:/in/leftabutton
+  - bool:/in/leftbbutton
+  - bool:/in/lefttrackpad
+  - bool:/in/leftstick
 - OSCName: RightThumb
-  Expression: len(v) - ([True] + v)[::-1].index(True)
+  Expression: len(v) - ([True] + v)[::-1].index(True) # last index of true value, or zero
   Actions:
-  - bool:/actions/thumbparams/in/rightabutton
-  - bool:/actions/thumbparams/in/rightbbutton
-  - bool:/actions/thumbparams/in/righttrackpad
-  - bool:/actions/thumbparams/in/rightstick
+  - bool:/in/rightabutton
+  - bool:/in/rightbbutton
+  - bool:/in/righttrackpad
+  - bool:/in/rightstick
 - OSCName: LeftThumbTouch
   Expression: any(v)
   Actions:
-  - bool:/actions/thumbparams/in/leftabutton
-  - bool:/actions/thumbparams/in/leftbbutton
-  - bool:/actions/thumbparams/in/lefttrackpad
-  - bool:/actions/thumbparams/in/leftstick
+  - bool:/in/leftabutton
+  - bool:/in/leftbbutton
+  - bool:/in/lefttrackpad
+  - bool:/in/leftstick
 - OSCName: RightThumbTouch
   Expression: any(v)
   Actions:
-  - bool:/actions/thumbparams/in/rightabutton
-  - bool:/actions/thumbparams/in/rightbbutton
-  - bool:/actions/thumbparams/in/righttrackpad
-  - bool:/actions/thumbparams/in/rightstick
+  - bool:/in/rightabutton
+  - bool:/in/rightbbutton
+  - bool:/in/righttrackpad
+  - bool:/in/rightstick
 - OSCName: LeftABButtons
   Expression: v[0] and v[1]
   Actions:
-  - bool:/actions/thumbparams/in/leftabutton
-  - bool:/actions/thumbparams/in/leftbbutton
+  - bool:/in/leftabutton
+  - bool:/in/leftbbutton
 - OSCName: RightABButtons
   Expression: v[0] and v[1]
   Actions:
-  - bool:/actions/thumbparams/in/rightabutton
-  - bool:/actions/thumbparams/in/rightbbutton
+  - bool:/in/rightabutton
+  - bool:/in/rightbbutton
 - OSCName: RightGripSquareExample
   Expression: v[0]**2
   Actions:
-  - float:/actions/thumbparams/in/rightgrip
+  - float:/in/rightgrip
   Ignore: true

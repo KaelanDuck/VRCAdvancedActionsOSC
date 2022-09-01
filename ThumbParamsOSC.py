@@ -1,4 +1,7 @@
+from dataclasses import dataclass
 import json
+from types import CodeType
+from typing import Any, Iterable
 import yaml
 import traceback
 import openvr
@@ -11,6 +14,7 @@ import re
 from pythonosc import udp_client
 
 import numpy as np
+import math
 
 # Argument Parser
 parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data from SteamVR and sends it to an OSC-Client')
@@ -19,13 +23,38 @@ parser.add_argument('-i', '--ip', required=False, type=str, help="set OSC ip. De
 parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port. Default=9000")
 args = parser.parse_args()
 
+# keep eval somewhat safe
 eval_allowed_builtins = {x: eval(x) for x in ['abs', 'all', 'any', 'bool', 'complex', 'divmod', 'float', 'int', 'len', 'max', 'min', 'pow', 'round', 'sum']}
-eval_globals = {"__builtins__": eval_allowed_builtins, "np": np}
+eval_globals = {"__builtins__": eval_allowed_builtins, "np": np, "math": math}
 
 # Set window name on Windows
 if os.name == 'nt':
     ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
 
+##################################################
+# some classes for storing data
+@dataclass
+class ActionHandle:
+    handle : str
+    type: str
+
+@dataclass
+class BasicParameter:
+    name : str
+    actionHandle : ActionHandle
+
+@dataclass
+class CustomParameter:
+    name : str
+    expression : CodeType
+    actionHandles : Iterable[ActionHandle]
+
+@dataclass
+class OSCMessage:
+    path : str
+    value : Any
+
+###############################################
 
 def move(y, x):
     """Moves console cursor."""
@@ -42,13 +71,12 @@ def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
+###########################################################################################################
 
 # load config
 config = yaml.safe_load(open(resource_path('config.yaml')))
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
-
-# also load the action manifest, to get type info
 
 # Set up UDP OSC client
 oscClient = udp_client.SimpleUDPClient(IP, PORT)
@@ -57,43 +85,51 @@ oscClient = udp_client.SimpleUDPClient(IP, PORT)
 application = openvr.init(openvr.VRApplication_Utility)
 action_path = os.path.join(resource_path(config["BindingsFolder"]), config["ActionManifestFile"])
 openvr.VRInput().setActionManifestPath(action_path)
-actionSetHandle = openvr.VRInput().getActionSetHandle(config["ActionSetHandle"])
+actionSetHandleString = config["ActionSetHandle"]
+actionSetHandle = openvr.VRInput().getActionSetHandle(actionSetHandleString)
 
-# Set up OpenVR Action Handles
-
-# sets up a dict with osc name and action handle
-getActionHandles = lambda cfg : [
-    {
-        "OSCName": param["OSCName"],
-        "ActionHandle": openvr.VRInput().getActionHandle(param["Action"])
-    } for param in cfg if not ("Ignore" in param and param["Ignore"] == True)
-]
-
-floatActionHandles = getActionHandles(config["FloatParams"])
-boolActionHandles = getActionHandles(config["BoolParams"])
-
-# quick and probably insecure check for double underscores in custom action handles
+# check for type specifiers in all params
+for name,act in config["Params"].items():
+    if act.count(":") != 1:
+        raise RuntimeError(f"Missing type in action for {name}")
 for param in config["CustomParams"]:
-    if "__" in param["Expression"]:
-        raise RuntimeError(f"Possibly unsafe expression in parameter {param['OSCName']}: {param['Expression']}")
     for act in param["Actions"]:
         if act.count(":") != 1:
             raise RuntimeError(f"Missing type in action for {param['OSCName']}")
 
 
-customActionHandles = [
-    {
-        "OSCName": param["OSCName"],
-        "Expression": compile(param["Expression"], 'config.json', 'eval'),
-        "ActionHandles": [{
-            "Handle": openvr.VRInput().getActionHandle(act.split(":")[1]),
-            "Type": act.split(":")[0] # should be 'bool' or 'float'
-        } for act in param["Actions"]]
-    } for param in config["CustomParams"] if not ("Ignore" in param and param["Ignore"] == True)
+# Set up OpenVR Action Handles
+
+# config->Params
+basicParameters = [
+    BasicParameter(
+        name = name,
+        actionHandle = ActionHandle(
+            handle = openvr.VRInput().getActionHandle(actionSetHandleString + act.split(":")[1]),
+            type = act.split(":")[0] # should be 'bool' or 'float'
+        )
+    ) for name,act in config["Params"].items()
+]
+
+# quick and probably insecure check for double underscores in custom action handles
+for param in config["CustomParams"]:
+    if "__" in param["Expression"]:
+        raise RuntimeError(f"Possibly unsafe expression in parameter {param['OSCName']}: {param['Expression']}")
+
+# config->CustomParams
+customParameters = [
+    CustomParameter(
+        name = param["OSCName"],
+        expression = compile(param["Expression"], 'config.json', 'eval'), # compile the expression to use with eval later
+        actionHandles = [ActionHandle(
+            handle = openvr.VRInput().getActionHandle(actionSetHandleString + act.split(":")[1]),
+            type = act.split(":")[0] # should be 'bool' or 'float'
+        ) for act in param["Actions"]]
+    ) for param in config["CustomParams"]
 ]
 
 # used for debug print
-max_name_length = max([len(x["OSCName"]) for x in floatActionHandles + boolActionHandles + customActionHandles])
+max_name_length = max([len(x.name) for x in basicParameters + customParameters])
 
 
 ####################################################################################################
@@ -125,42 +161,38 @@ def handle_input():
     OSCMsgs = []
 
     if "ConnectedParam" in config:
-        OSCMsgs += [{"OSCName": config["ConnectedParam"], "Value": True}]
+        OSCMsgs += [OSCMessage(config["ConnectedParam"],True)]
 
-    # boolean parameters
-    OSCMsgs += [{
-        "OSCName": param["OSCName"], 
-        "Value": get_digital(param["ActionHandle"])
-    } for param in boolActionHandles]
+    # basic parameters
+    OSCMsgs += [OSCMessage(
+        path = param.name, 
+        value = get_analog(param.actionHandle.handle) 
+                    if param.actionHandle.type == 'float' 
+                    else get_digital(param.actionHandle.handle)
+    ) for param in basicParameters]
 
-    # float parameters
-    OSCMsgs += [{
-        "OSCName": param["OSCName"], 
-        "Value": get_analog(param["ActionHandle"])
-    } for param in floatActionHandles]
-    
     # custom expression parameters
-    OSCMsgs += [{
-        "OSCName": param["OSCName"],
-        "Value": eval(
-            param["Expression"], # danger danger
+    OSCMsgs += [OSCMessage(
+        path = param.name,
+        value = eval(
+            param.expression,
             eval_globals,
             {"v": [
-                get_analog(ah["Handle"]) if ah["Type"] == 'float' else get_digital(ah["Handle"])
-                for ah in param["ActionHandles"]
+                get_analog(ah.handle) if ah.type == 'float' else get_digital(ah.handle)
+                for ah in param.actionHandles
             ]}
         )
-    } for param in customActionHandles]
-    
+    ) for param in customParameters]
+
     # send all the messages!
     for msg in OSCMsgs:
-        oscClient.send_message(f'/avatar/parameters/{msg["OSCName"]}', msg["Value"])
+        oscClient.send_message(f'/avatar/parameters/{msg.path}', msg.value)
 
     # debug output
     if args.debug:
-        ints =   [msg for msg in OSCMsgs if type(msg["Value"]) == int]
-        floats = [msg for msg in OSCMsgs if type(msg["Value"]) == float]
-        bools =  [msg for msg in OSCMsgs if type(msg["Value"]) == bool]
+        ints =   [msg for msg in OSCMsgs if type(msg.value) == int]
+        floats = [msg for msg in OSCMsgs if type(msg.value) == float]
+        bools =  [msg for msg in OSCMsgs if type(msg.value) == bool]
 
         # dashes in the headers should line up with the data width
         # as the name length is variable and we use the maximum
@@ -171,15 +203,15 @@ def handle_input():
         if ints:
             print(dashes + "- Ints -" + dashes)
             for m in ints:
-                print(f"{m['OSCName']:<{max_name_length}s} : {m['Value']:d}")
+                print(f"{m.path:<{max_name_length}s} : {m.value:d}")
         if floats:
             print(dashes + " Floats " + dashes)
             for m in floats:
-                print(f"{m['OSCName']:<{max_name_length}s} : {m['Value']:.6f}")
+                print(f"{m.path:<{max_name_length}s} : {m.value:.6f}")
         if bools:
             print(dashes + "- Bools " + dashes)
             for m in bools:
-                print(f"{m['OSCName']:<{max_name_length}s} : {str(m['Value'])} ")
+                print(f"{m.path:<{max_name_length}s} : {str(m.value)} ")
 
 
 cls()
