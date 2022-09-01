@@ -1,4 +1,5 @@
 import json
+import yaml
 import traceback
 import openvr
 import sys
@@ -43,7 +44,7 @@ def resource_path(relative_path):
 
 
 # load config
-config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))))
+config = yaml.safe_load(open(resource_path('config.yaml')))
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 
