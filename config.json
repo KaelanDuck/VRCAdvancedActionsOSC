@@ -76,65 +76,71 @@
                 "Action": "/actions/thumbparams/in/righttriggertouch"
             }
         ],
-    
-        "ComboParams": [
+
+        "CustomParams": [
             {
                 "OSCName": "LeftThumb",
-                "Type": "index_from_bools",
+                "Expression": "len(v) - ([True] + v)[::-1].index(True)",
                 "Actions": [
-                    "/actions/thumbparams/in/leftabutton",
-                    "/actions/thumbparams/in/leftbbutton",
-                    "/actions/thumbparams/in/lefttrackpad",
-                    "/actions/thumbparams/in/leftstick"
+                    "bool:/actions/thumbparams/in/leftabutton",
+                    "bool:/actions/thumbparams/in/leftbbutton",
+                    "bool:/actions/thumbparams/in/lefttrackpad",
+                    "bool:/actions/thumbparams/in/leftstick"
                 ]
             },
             {
                 "OSCName": "RightThumb",
-                "Type": "index_from_bools",
+                "Expression": "len(v) - ([True] + v)[::-1].index(True)",
                 "Actions": [
-                    "/actions/thumbparams/in/rightabutton",
-                    "/actions/thumbparams/in/rightbbutton",
-                    "/actions/thumbparams/in/righttrackpad",
-                    "/actions/thumbparams/in/rightstick"
+                    "bool:/actions/thumbparams/in/rightabutton",
+                    "bool:/actions/thumbparams/in/rightbbutton",
+                    "bool:/actions/thumbparams/in/righttrackpad",
+                    "bool:/actions/thumbparams/in/rightstick"
                 ]
             },
             {
-                "OSCName": "LeftABButtons",
-                "Type": "bool_and",
-                "Actions": [
-                    "/actions/thumbparams/in/leftabutton",
-                    "/actions/thumbparams/in/leftbbutton"
-                ],
-                "Ignore": true
-            },
-            {
-                "OSCName": "RightABButtons",
-                "Type": "bool_and",
-                "Actions": [
-                    "/actions/thumbparams/in/rightabutton",
-                    "/actions/thumbparams/in/rightbbutton"
-                ],
-                "Ignore": true
-            },
-            {
                 "OSCName": "LeftThumbTouch",
-                "Type": "bool_or",
+                "Expression": "any(v)",
                 "Actions": [
-                    "/actions/thumbparams/in/leftabutton",
-                    "/actions/thumbparams/in/leftbbutton",
-                    "/actions/thumbparams/in/lefttrackpad",
-                    "/actions/thumbparams/in/leftstick"  
+                    "bool:/actions/thumbparams/in/leftabutton",
+                    "bool:/actions/thumbparams/in/leftbbutton",
+                    "bool:/actions/thumbparams/in/lefttrackpad",
+                    "bool:/actions/thumbparams/in/leftstick"
                 ]
             },
             {
                 "OSCName": "RightThumbTouch",
-                "Type": "bool_or",
+                "Expression": "any(v)",
                 "Actions": [
-                    "/actions/thumbparams/in/rightabutton",
-                    "/actions/thumbparams/in/rightbbutton",
-                    "/actions/thumbparams/in/righttrackpad",
-                    "/actions/thumbparams/in/rightstick"
+                    "bool:/actions/thumbparams/in/rightabutton",
+                    "bool:/actions/thumbparams/in/rightbbutton",
+                    "bool:/actions/thumbparams/in/righttrackpad",
+                    "bool:/actions/thumbparams/in/rightstick"
                 ]
+            },
+            {
+                "OSCName": "LeftABButtons",
+                "Expression": "v[0] and v[1]",
+                "Actions": [
+                    "bool:/actions/thumbparams/in/leftabutton",
+                    "bool:/actions/thumbparams/in/leftbbutton"
+                ]
+            },
+            {
+                "OSCName": "RightABButtons",
+                "Expression": "v[0] and v[1]",
+                "Actions": [
+                    "bool:/actions/thumbparams/in/rightabutton",
+                    "bool:/actions/thumbparams/in/rightbbutton"
+                ]
+            },
+            {
+                "OSCName": "RightGripSquareExample",
+                "Expression": "v[0]**2",
+                "Actions": [
+                    "float:/actions/thumbparams/in/rightgrip"
+                ],
+                "Ignore": true
             }
         ]
     }

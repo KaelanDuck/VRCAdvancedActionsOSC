@@ -6,7 +6,10 @@ import os
 import time
 import ctypes
 import argparse
+import re
 from pythonosc import udp_client
+
+import numpy as np
 
 # Argument Parser
 parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data from SteamVR and sends it to an OSC-Client')
@@ -14,6 +17,9 @@ parser.add_argument('-d', '--debug', required=False, action='store_true', help='
 parser.add_argument('-i', '--ip', required=False, type=str, help="set OSC ip. Default=127.0.0.1")
 parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port. Default=9000")
 args = parser.parse_args()
+
+eval_allowed_builtins = {x: eval(x) for x in ['abs', 'all', 'any', 'bool', 'complex', 'divmod', 'float', 'int', 'len', 'max', 'min', 'pow', 'round', 'sum']}
+eval_globals = {"__builtins__": eval_allowed_builtins, "np": np}
 
 # Set window name on Windows
 if os.name == 'nt':
@@ -41,6 +47,8 @@ config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 
+# also load the action manifest, to get type info
+
 # Set up UDP OSC client
 oscClient = udp_client.SimpleUDPClient(IP, PORT)
 
@@ -63,17 +71,28 @@ getActionHandles = lambda cfg : [
 floatActionHandles = getActionHandles(config["FloatParams"])
 boolActionHandles = getActionHandles(config["BoolParams"])
 
-# dict with osc name, type of combo action and a list of action handles to go with it
-comboActionHandles = [
+# quick and probably insecure check for double underscores in custom action handles
+for param in config["CustomParams"]:
+    if "__" in param["Expression"]:
+        raise RuntimeError(f"Possibly unsafe expression in parameter {param['OSCName']}: {param['Expression']}")
+    for act in param["Actions"]:
+        if act.count(":") != 1:
+            raise RuntimeError(f"Missing type in action for {param['OSCName']}")
+
+
+customActionHandles = [
     {
         "OSCName": param["OSCName"],
-        "Type": param["Type"],
-        "ActionHandles": [openvr.VRInput().getActionHandle(act) for act in param["Actions"]]
-    } for param in config["ComboParams"] if not ("Ignore" in param and param["Ignore"] == True)
+        "Expression": compile(param["Expression"], 'config.json', 'eval'),
+        "ActionHandles": [{
+            "Handle": openvr.VRInput().getActionHandle(act.split(":")[1]),
+            "Type": act.split(":")[0] # should be 'bool' or 'float'
+        } for act in param["Actions"]]
+    } for param in config["CustomParams"] if not ("Ignore" in param and param["Ignore"] == True)
 ]
 
 # used for debug print
-max_name_length = max([len(x["OSCName"]) for x in floatActionHandles + boolActionHandles + comboActionHandles])
+max_name_length = max([len(x["OSCName"]) for x in floatActionHandles + boolActionHandles + customActionHandles])
 
 
 ####################################################################################################
@@ -118,30 +137,19 @@ def handle_input():
         "OSCName": param["OSCName"], 
         "Value": get_analog(param["ActionHandle"])
     } for param in floatActionHandles]
-
-    # int / bool parameters (combos)
-    for param in comboActionHandles:
-        # output dictionary
-        out = {"OSCName": param["OSCName"]}
-
-        pType = param["Type"]
-        if pType == "index_from_bools":
-            # Select the index of a digital action that is true, we use the last true action in the list
-            index = 0
-            for i in range(len(param["ActionHandles"])):
-                if get_digital(param["ActionHandles"][i]):
-                    index = i + 1
-            out["Value"] = index
-        elif pType == "bool_and":
-            # returns true if all listed digital actions are true
-            out["Value"] = all([get_digital(ah) for ah in param["ActionHandles"]])
-        elif pType == "bool_or":
-            # returns true if all listed digital actions are true
-            out["Value"] = any([get_digital(ah) for ah in param["ActionHandles"]])
-        else:
-            raise RuntimeError("combo-type: {} not supported".format(pType))
-        
-        OSCMsgs += [out] # append as an array to append a single element
+    
+    # custom expression parameters
+    OSCMsgs += [{
+        "OSCName": param["OSCName"],
+        "Value": eval(
+            param["Expression"], # danger danger
+            eval_globals,
+            {"v": [
+                get_analog(ah["Handle"]) if ah["Type"] == 'float' else get_digital(ah["Handle"])
+                for ah in param["ActionHandles"]
+            ]}
+        )
+    } for param in customActionHandles]
     
     # send all the messages!
     for msg in OSCMsgs:
