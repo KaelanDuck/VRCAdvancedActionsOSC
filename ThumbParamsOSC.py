@@ -104,6 +104,9 @@ def handle_input():
     # list of messages to be sent to OSC later
     OSCMsgs = []
 
+    if "ConnectedParam" in config:
+        OSCMsgs += [{"OSCName": config["ConnectedParam"], "Value": True}]
+
     # boolean parameters
     OSCMsgs += [{
         "OSCName": param["OSCName"], 

@@ -4,6 +4,8 @@
         "BindingsFolder": "bindings",
         "ActionManifestFile": "thumbparams_actions.json",
         "ActionSetHandle": "/actions/thumbparams",
+
+        "ConnectedParam": "VTP_Active",
     
         "FloatParams": [
             {
