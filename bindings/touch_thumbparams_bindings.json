@@ -115,26 +115,11 @@
             },
             {
                "inputs" : {
-                  "touch" : {
-                     "output" : "/actions/thumbparams/in/lefttriggertouch"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/left/input/trigger"
-            },
-            {
-               "inputs" : {
-                  "touch" : {
-                     "output" : "/actions/thumbparams/in/righttriggertouch"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/trigger"
-            },
-            {
-               "inputs" : {
                   "pull" : {
                      "output" : "/actions/thumbparams/in/lefttrigger"
+                  },
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/lefttriggertouch"
                   }
                },
                "mode" : "trigger",
@@ -144,6 +129,9 @@
                "inputs" : {
                   "pull" : {
                      "output" : "/actions/thumbparams/in/righttrigger"
+                  },
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/righttriggertouch"
                   }
                },
                "mode" : "trigger",

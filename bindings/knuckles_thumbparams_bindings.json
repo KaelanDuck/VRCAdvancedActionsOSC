@@ -81,6 +81,9 @@
                "inputs" : {
                   "pull" : {
                      "output" : "/actions/thumbparams/in/lefttrigger"
+                  },
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/lefttriggertouch"
                   }
                },
                "mode" : "trigger",
@@ -90,6 +93,9 @@
                "inputs" : {
                   "pull" : {
                      "output" : "/actions/thumbparams/in/righttrigger"
+                  },
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/righttriggertouch"
                   }
                },
                "mode" : "trigger",
