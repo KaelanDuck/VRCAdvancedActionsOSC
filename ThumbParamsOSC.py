@@ -1,3 +1,4 @@
+from array import array
 from dataclasses import dataclass
 import json
 from types import CodeType
@@ -13,8 +14,10 @@ import argparse
 import re
 from pythonosc import udp_client
 
+# use these for eval expressions
 import numpy as np
 import math
+import glm
 
 # Argument Parser
 parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data from SteamVR and sends it to an OSC-Client')
@@ -25,7 +28,7 @@ args = parser.parse_args()
 
 # keep eval somewhat safe
 eval_allowed_builtins = {x: eval(x) for x in ['abs', 'all', 'any', 'bool', 'complex', 'divmod', 'float', 'int', 'len', 'max', 'min', 'pow', 'round', 'sum']}
-eval_globals = {"__builtins__": eval_allowed_builtins, "np": np, "math": math}
+eval_globals = {"__builtins__": eval_allowed_builtins, "np": np, "math": math, "glm": glm}
 
 # Set window name on Windows
 if os.name == 'nt':
@@ -53,6 +56,15 @@ class CustomParameter:
 class OSCMessage:
     path : str
     value : Any
+
+# this class is passed to the eval function for pose types
+@dataclass
+class DevicePose:
+    matrix : glm.mat4
+    position : glm.vec3
+    rotation : glm.quat
+    velocity : glm.vec3
+    angvelocity : glm.vec3
 
 ###############################################
 
@@ -85,52 +97,63 @@ oscClient = udp_client.SimpleUDPClient(IP, PORT)
 application = openvr.init(openvr.VRApplication_Utility)
 action_path = os.path.join(resource_path(config["BindingsFolder"]), config["ActionManifestFile"])
 openvr.VRInput().setActionManifestPath(action_path)
-actionSetHandleString = config["ActionSetHandle"]
-actionSetHandle = openvr.VRInput().getActionSetHandle(actionSetHandleString)
+actionSetHandle = openvr.VRInput().getActionSetHandle(config["ActionSetHandle"])
+actionSetHandleString = config["ActionSetHandle"] + "/in/"
 
-# check for type specifiers in all params
+# use the action set to map action names to their types, we will use this later
+typemap = {tp["name"].split("/")[-1]: tp["type"] for tp in json.load(open(action_path))["actions"]}
+
+# check the actions specified in the config are actually in the action set, otherwise openvr will bork
 for name,act in config["Params"].items():
-    if act.count(":") != 1:
-        raise RuntimeError(f"Missing type in action for {name}")
+    if act not in typemap:
+        raise RuntimeError(f"Action in config not in action map: {act}")
 for param in config["CustomParams"]:
     for act in param["Actions"]:
-        if act.count(":") != 1:
-            raise RuntimeError(f"Missing type in action for {param['OSCName']}")
+        if act not in typemap:
+            raise RuntimeError(f"Action in config not in action map: {act}")
 
+# check no funny types in basic parameters
+#TODO: allow for vec2.x/y and pose.pos.x etc... in basic parameters
+for name,act in config["Params"].items():
+    if typemap[act] not in ('vector1', 'boolean'):
+        raise RuntimeError(f"Action with type {typemap[act]} not allowed in basic params: {act}")
 
 # Set up OpenVR Action Handles
 
 # config->Params
+# turn the parameter name into an actionhandle and store the type beside it
 basicParameters = [
     BasicParameter(
         name = name,
         actionHandle = ActionHandle(
-            handle = openvr.VRInput().getActionHandle(actionSetHandleString + act.split(":")[1]),
-            type = act.split(":")[0] # should be 'bool' or 'float'
+            handle = openvr.VRInput().getActionHandle(actionSetHandleString + act),
+            type = typemap[act]
         )
     ) for name,act in config["Params"].items()
 ]
 
 # quick and probably insecure check for double underscores in custom action handles
+#NOTE: this is not secure, but probably secure enough to stop undetermined people trying to pry it open
 for param in config["CustomParams"]:
     if "__" in param["Expression"]:
         raise RuntimeError(f"Possibly unsafe expression in parameter {param['OSCName']}: {param['Expression']}")
 
 # config->CustomParams
+# store a list of actionhandles for each parameter as per the config
 customParameters = [
     CustomParameter(
         name = param["OSCName"],
-        expression = compile(param["Expression"], 'config.json', 'eval'), # compile the expression to use with eval later
+        expression = compile(param["Expression"], 'config.yaml', 'eval'), # compile the expression to use with eval later
         actionHandles = [ActionHandle(
-            handle = openvr.VRInput().getActionHandle(actionSetHandleString + act.split(":")[1]),
-            type = act.split(":")[0] # should be 'bool' or 'float'
+            handle = openvr.VRInput().getActionHandle(actionSetHandleString + act),
+            type = typemap[act]
         ) for act in param["Actions"]]
     ) for param in config["CustomParams"]
 ]
 
 # used for debug print
-max_name_length = max([len(x.name) for x in basicParameters + customParameters])
-
+# use [0] for testing purposes when we don't export any parameters
+max_name_length = max([0] + [len(x.name) for x in basicParameters + customParameters])
 
 ####################################################################################################
 
@@ -141,9 +164,45 @@ def get_digital(actionHandle : openvr.VRActionHandle_t) -> bool:
 
 # helper function
 def get_analog(actionHandle : openvr.VRActionHandle_t) -> float:
-    """Shorthand for getAnalogActionData(...)"""
+    """Shorthand for getAnalogActionData(...).x"""
     return float(openvr.VRInput().getAnalogActionData(actionHandle, openvr.k_ulInvalidInputValueHandle).x)
 
+# returns a DevicePose object used by an eval function
+def get_pose(actionHandle : openvr.VRActionHandle_t) -> DevicePose:
+    pose : openvr.TrackedDevicePose_t = openvr.VRInput().getPoseActionDataForNextFrame(actionHandle, openvr.TrackingUniverseStanding, openvr.k_ulInvalidInputValueHandle).pose
+    m = pose.mDeviceToAbsoluteTracking.m
+    # type converting through numpy seems to make it happy
+    matrix : glm.mat4 = glm.mat4(glm.mat4x3(np.mat([m[0], m[1], m[2]])))
+    pos = glm.vec3()
+    rot = glm.quat()
+    glm.decompose(matrix, glm.vec3(), rot, pos, glm.vec3(), glm.vec4())
+    return DevicePose(
+        matrix = matrix,
+        position = pos,
+        rotation = rot,
+        velocity = glm.vec3(pose.vVelocity.v[0], pose.vVelocity.v[1], pose.vVelocity.v[2]),
+        angvelocity = glm.vec3(pose.vAngularVelocity.v[0], pose.vAngularVelocity.v[1], pose.vAngularVelocity.v[2])
+    )
+
+# returns a glm.vec2 for any vector2 types (joystick, trackpad)
+def get_vec2(actionHandle : openvr.VRActionHandle_t) -> glm.vec2:
+    iaad = openvr.VRInput().getAnalogActionData(actionHandle, openvr.k_ulInvalidInputValueHandle)
+    return glm.vec2(iaad.x, iaad.y)
+
+###########################################
+
+# use the correct function to resolve the action handle to a value
+def get_value(actionHandle : openvr.VRActionHandle_t, typestr : str):
+    if typestr == "boolean":
+        return get_digital(actionHandle)
+    elif typestr == "vector1":
+        return get_analog(actionHandle)
+    elif typestr == "pose":
+        return get_pose(actionHandle)
+    else: # typestr == "vector2"
+        return get_vec2(actionHandle)
+
+##################################################
 
 def handle_input():
     """Handles all the OpenVR Input and sends it via OSC"""
@@ -166,9 +225,7 @@ def handle_input():
     # basic parameters
     OSCMsgs += [OSCMessage(
         path = param.name, 
-        value = get_analog(param.actionHandle.handle) 
-                    if param.actionHandle.type == 'float' 
-                    else get_digital(param.actionHandle.handle)
+        value = get_value(param.actionHandle.handle, param.actionHandle.type) 
     ) for param in basicParameters]
 
     # custom expression parameters
@@ -178,7 +235,7 @@ def handle_input():
             param.expression,
             eval_globals,
             {"v": [
-                get_analog(ah.handle) if ah.type == 'float' else get_digital(ah.handle)
+                get_value(ah.handle, ah.type)
                 for ah in param.actionHandles
             ]}
         )

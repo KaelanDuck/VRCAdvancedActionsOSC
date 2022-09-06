@@ -1,70 +1,158 @@
 {
-  "default_bindings": [
-	{
-      "controller_type": "knuckles",
-      "binding_url": "knuckles_thumbparams_bindings.json"
-    },
-    {
-      "controller_type": "oculus_touch",
-      "binding_url": "touch_thumbparams_bindings.json"
-    }
+  "actions" : [
+     {
+        "name" : "/actions/VTP/in/left.joystick.position",
+        "type" : "vector2"
+     },
+     {
+        "name" : "/actions/VTP/in/left.joystick.click",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/left.joystick.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/right.joystick.position",
+        "type" : "vector2"
+     },
+     {
+        "name" : "/actions/VTP/in/right.joystick.click",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/right.joystick.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/left.trackpad.position",
+        "type" : "vector2"
+     },
+     {
+        "name" : "/actions/VTP/in/left.trackpad.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/right.trackpad.position",
+        "type" : "vector2"
+     },
+     {
+        "name" : "/actions/VTP/in/right.trackpad.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/left.trigger.pull",
+        "type" : "vector1"
+     },
+     {
+        "name" : "/actions/VTP/in/left.trigger.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/right.trigger.pull",
+        "type" : "vector1"
+     },
+     {
+        "name" : "/actions/VTP/in/right.trigger.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/left.grip.pull",
+        "type" : "vector1"
+     },
+     {
+        "name" : "/actions/VTP/in/left.grip.force",
+        "type" : "vector1"
+     },
+     {
+        "name" : "/actions/VTP/in/right.grip.pull",
+        "type" : "vector1"
+     },
+     {
+        "name" : "/actions/VTP/in/right.grip.force",
+        "type" : "vector1"
+     },
+     {
+        "name" : "/actions/VTP/in/left.a.click",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/left.a.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/right.a.click",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/right.a.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/left.b.click",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/left.b.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/right.b.click",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/right.b.touch",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/left.pose.raw",
+        "type" : "pose"
+     },
+     {
+        "name" : "/actions/VTP/in/right.pose.raw",
+        "type" : "pose"
+     },
+     {
+        "name" : "/actions/VTP/in/left.pose.base",
+        "type" : "pose"
+     },
+     {
+        "name" : "/actions/VTP/in/right.pose.base",
+        "type" : "pose"
+     },
+     {
+        "name" : "/actions/VTP/in/left.pose.tip",
+        "type" : "pose"
+     },
+     {
+        "name" : "/actions/VTP/in/right.pose.tip",
+        "type" : "pose"
+     },
+     {
+        "name" : "/actions/VTP/in/head.proximity",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/head.tap",
+        "type" : "boolean"
+     },
+     {
+        "name" : "/actions/VTP/in/head.pose.raw",
+        "type" : "pose"
+     }
   ],
-  "actions": [
-    {
-      "name": "/actions/thumbparams/in/lefttrigger",
-      "type": "vector1"
-    },
-    {
-      "name": "/actions/thumbparams/in/righttrigger",
-      "type": "vector1"
-    },
-    {
-      "name": "/actions/thumbparams/in/leftgrip",
-      "type": "vector1"
-    },
-    {
-      "name": "/actions/thumbparams/in/rightgrip",
-      "type": "vector1"
-    },
-    {
-      "name": "/actions/thumbparams/in/lefttriggertouch",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/thumbparams/in/righttriggertouch",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/thumbparams/in/leftstick",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/thumbparams/in/lefttrackpad",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/thumbparams/in/leftabutton",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/thumbparams/in/leftbbutton",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/thumbparams/in/rightstick",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/thumbparams/in/righttrackpad",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/thumbparams/in/rightabutton",
-      "type": "boolean"
-    },
-    {
-      "name": "/actions/thumbparams/in/rightbbutton",
-      "type": "boolean"
-    }
+  "default_bindings" : [
+     {
+        "binding_url" : "system_generated_python_exe_binding_oculus_touch.json",
+        "controller_type" : "oculus_touch"
+     },
+     {
+        "binding_url" : "system_generated_python_exe_binding_knuckles.json",
+        "controller_type" : "knuckles"
+     },
+     {
+        "binding_url" : "system_generated_python_exe_binding_rift.json",
+        "controller_type" : "rift"
+     }
   ]
 }

@@ -4,67 +4,61 @@ Port: 9000
 
 BindingsFolder: bindings
 ActionManifestFile: thumbparams_actions.json
-ActionSetHandle: "/actions/thumbparams"
+ActionSetHandle: /actions/VTP
 
 ConnectedParam: VTP_Active
 
-Params:
-  LeftTrigger       : float:/in/lefttrigger
-  RightTrigger      : float:/in/righttrigger
-  LeftGrip          : float:/in/leftgrip
-  RightGrip         : float:/in/rightgrip
-  LeftTriggerTouch  : bool:/in/lefttriggertouch
-  RightTriggerTouch : bool:/in/righttriggertouch
-#  LeftAButton       : bool:/in/leftabutton
-#  LeftBButton       : bool:/in/leftbbutton
-#  LeftTrackPad      : bool:/in/lefttrackpad
-#  LeftThumbStick    : bool:/in/leftstick
-#  RightAButton      : bool:/in/rightabutton
-#  RightBButton      : bool:/in/rightbbutton
-#  RightTrackPad     : bool:/in/righttrackpad
-#  RightThumbStick   : bool:/in/rightstick
+Params: 
+  LeftTrigger       : left.trigger.pull
+  RightTrigger      : right.trigger.pull
+  LeftGrip          : left.grip.pull
+  RightGrip         : right.grip.pull
+  LeftTriggerTouch  : left.trigger.touch
+  RightTriggerTouch : right.trigger.touch
 
 CustomParams:
-- OSCName: LeftThumb
-  Expression: len(v) - ([True] + v)[::-1].index(True) # last index of true value, or zero
+- OSCName: ControllerTipDistance
+  Expression: glm.distance(v[0].position, v[1].position)
   Actions:
-  - bool:/in/leftabutton
-  - bool:/in/leftbbutton
-  - bool:/in/lefttrackpad
-  - bool:/in/leftstick
-- OSCName: RightThumb
-  Expression: len(v) - ([True] + v)[::-1].index(True) # last index of true value, or zero
+  - left.pose.tip
+  - right.pose.tip
+- OSCName: RightControllerToHeadDist
+  Expression: glm.distance(v[0].position, v[1].position)
   Actions:
-  - bool:/in/rightabutton
-  - bool:/in/rightbbutton
-  - bool:/in/righttrackpad
-  - bool:/in/rightstick
+  - head.pose.raw
+  - right.pose.tip
+- OSCName: DistanceTip20cm
+  # vector is 0.2m along the forward axis
+  # transform using transform matrix for each controller and get distance between
+  Expression: glm.distance(v[0].matrix * glm.vec4(0,0,-0.2,1), v[1].matrix * glm.vec4(0,0,-0.2,1))
+  Actions:
+  - right.pose.tip
+  - left.pose.tip
+- OSCName: HeadsetXPos
+  Expression: v[0].position.x
+  Actions:
+  - head.pose.raw
+##################################
 - OSCName: LeftThumbTouch
   Expression: any(v)
   Actions:
-  - bool:/in/leftabutton
-  - bool:/in/leftbbutton
-  - bool:/in/lefttrackpad
-  - bool:/in/leftstick
+  - left.a.touch
+  - left.b.touch
+  - left.trackpad.touch
+  - left.joystick.touch
 - OSCName: RightThumbTouch
   Expression: any(v)
   Actions:
-  - bool:/in/rightabutton
-  - bool:/in/rightbbutton
-  - bool:/in/righttrackpad
-  - bool:/in/rightstick
-- OSCName: LeftABButtons
-  Expression: v[0] and v[1]
+  - right.a.touch
+  - right.b.touch
+  - right.trackpad.touch
+  - right.joystick.touch
+####################################
+- OSCName: RightJoy.X
+  Expression: v[0].x
   Actions:
-  - bool:/in/leftabutton
-  - bool:/in/leftbbutton
-- OSCName: RightABButtons
-  Expression: v[0] and v[1]
+  - right.joystick.position
+- OSCName: RightJoy.Y
+  Expression: v[0].y
   Actions:
-  - bool:/in/rightabutton
-  - bool:/in/rightbbutton
-- OSCName: RightGripSquareExample
-  Expression: v[0]**2
-  Actions:
-  - float:/in/rightgrip
-  Ignore: true
+  - right.joystick.position
