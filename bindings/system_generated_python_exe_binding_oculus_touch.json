@@ -33,27 +33,27 @@
       "/actions/vtp" : {
          "poses" : [
             {
-               "output" : "/actions/vtp/in/left.pose.base",
+               "output" : "/actions/vtp/in/left_pose_base",
                "path" : "/user/hand/left/pose/base"
             },
             {
-               "output" : "/actions/vtp/in/right.pose.base",
+               "output" : "/actions/vtp/in/right_pose_base",
                "path" : "/user/hand/right/pose/base"
             },
             {
-               "output" : "/actions/vtp/in/left.pose.raw",
+               "output" : "/actions/vtp/in/left_pose_raw",
                "path" : "/user/hand/left/pose/raw"
             },
             {
-               "output" : "/actions/vtp/in/right.pose.raw",
+               "output" : "/actions/vtp/in/right_pose_raw",
                "path" : "/user/hand/right/pose/raw"
             },
             {
-               "output" : "/actions/vtp/in/left.pose.tip",
+               "output" : "/actions/vtp/in/left_pose_tip",
                "path" : "/user/hand/left/pose/tip"
             },
             {
-               "output" : "/actions/vtp/in/right.pose.tip",
+               "output" : "/actions/vtp/in/right_pose_tip",
                "path" : "/user/hand/right/pose/tip"
             }
          ],
@@ -61,10 +61,10 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/vtp/in/left.trigger.pull"
+                     "output" : "/actions/vtp/in/left_trigger_pull"
                   },
                   "touch" : {
-                     "output" : "/actions/vtp/in/left.trigger.touch"
+                     "output" : "/actions/vtp/in/left_trigger_touch"
                   }
                },
                "mode" : "trigger",
@@ -73,13 +73,13 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/vtp/in/left.joystick.click"
+                     "output" : "/actions/vtp/in/left_joystick_click"
                   },
                   "position" : {
-                     "output" : "/actions/vtp/in/left.joystick.position"
+                     "output" : "/actions/vtp/in/left_joystick_position"
                   },
                   "touch" : {
-                     "output" : "/actions/vtp/in/left.joystick.touch"
+                     "output" : "/actions/vtp/in/left_joystick_touch"
                   }
                },
                "mode" : "joystick",
@@ -88,7 +88,7 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/vtp/in/left.grip.pull"
+                     "output" : "/actions/vtp/in/left_grip_pull"
                   }
                },
                "mode" : "trigger",
@@ -97,10 +97,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/vtp/in/left.a.click"
+                     "output" : "/actions/vtp/in/left_a_click"
                   },
                   "touch" : {
-                     "output" : "/actions/vtp/in/left.a.touch"
+                     "output" : "/actions/vtp/in/left_a_touch"
                   }
                },
                "mode" : "button",
@@ -109,10 +109,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/vtp/in/left.b.click"
+                     "output" : "/actions/vtp/in/left_b_click"
                   },
                   "touch" : {
-                     "output" : "/actions/vtp/in/left.b.touch"
+                     "output" : "/actions/vtp/in/left_b_touch"
                   }
                },
                "mode" : "button",
@@ -121,10 +121,10 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/vtp/in/right.trigger.pull"
+                     "output" : "/actions/vtp/in/right_trigger_pull"
                   },
                   "touch" : {
-                     "output" : "/actions/vtp/in/right.trigger.touch"
+                     "output" : "/actions/vtp/in/right_trigger_touch"
                   }
                },
                "mode" : "trigger",
@@ -133,13 +133,13 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/vtp/in/right.joystick.click"
+                     "output" : "/actions/vtp/in/right_joystick_click"
                   },
                   "position" : {
-                     "output" : "/actions/vtp/in/right.joystick.position"
+                     "output" : "/actions/vtp/in/right_joystick_position"
                   },
                   "touch" : {
-                     "output" : "/actions/vtp/in/right.joystick.touch"
+                     "output" : "/actions/vtp/in/right_joystick_touch"
                   }
                },
                "mode" : "joystick",
@@ -148,7 +148,7 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/vtp/in/right.grip.pull"
+                     "output" : "/actions/vtp/in/right_grip_pull"
                   }
                },
                "mode" : "trigger",
@@ -157,10 +157,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/vtp/in/right.a.click"
+                     "output" : "/actions/vtp/in/right_a_click"
                   },
                   "touch" : {
-                     "output" : "/actions/vtp/in/right.a.touch"
+                     "output" : "/actions/vtp/in/right_a_touch"
                   }
                },
                "mode" : "button",
@@ -169,10 +169,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/vtp/in/right.b.click"
+                     "output" : "/actions/vtp/in/right_b_click"
                   },
                   "touch" : {
-                     "output" : "/actions/vtp/in/right.b.touch"
+                     "output" : "/actions/vtp/in/right_b_touch"
                   }
                },
                "mode" : "button",

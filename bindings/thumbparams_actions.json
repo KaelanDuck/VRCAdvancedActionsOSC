@@ -1,143 +1,143 @@
 {
   "actions" : [
      {
-        "name" : "/actions/VTP/in/left.joystick.position",
+        "name" : "/actions/VTP/in/left_joystick_position",
         "type" : "vector2"
      },
      {
-        "name" : "/actions/VTP/in/left.joystick.click",
+        "name" : "/actions/VTP/in/left_joystick_click",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/left.joystick.touch",
+        "name" : "/actions/VTP/in/left_joystick_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/right.joystick.position",
+        "name" : "/actions/VTP/in/right_joystick_position",
         "type" : "vector2"
      },
      {
-        "name" : "/actions/VTP/in/right.joystick.click",
+        "name" : "/actions/VTP/in/right_joystick_click",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/right.joystick.touch",
+        "name" : "/actions/VTP/in/right_joystick_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/left.trackpad.position",
+        "name" : "/actions/VTP/in/left_trackpad_position",
         "type" : "vector2"
      },
      {
-        "name" : "/actions/VTP/in/left.trackpad.touch",
+        "name" : "/actions/VTP/in/left_trackpad_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/right.trackpad.position",
+        "name" : "/actions/VTP/in/right_trackpad_position",
         "type" : "vector2"
      },
      {
-        "name" : "/actions/VTP/in/right.trackpad.touch",
+        "name" : "/actions/VTP/in/right_trackpad_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/left.trigger.pull",
+        "name" : "/actions/VTP/in/left_trigger_pull",
         "type" : "vector1"
      },
      {
-        "name" : "/actions/VTP/in/left.trigger.touch",
+        "name" : "/actions/VTP/in/left_trigger_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/right.trigger.pull",
+        "name" : "/actions/VTP/in/right_trigger_pull",
         "type" : "vector1"
      },
      {
-        "name" : "/actions/VTP/in/right.trigger.touch",
+        "name" : "/actions/VTP/in/right_trigger_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/left.grip.pull",
+        "name" : "/actions/VTP/in/left_grip_pull",
         "type" : "vector1"
      },
      {
-        "name" : "/actions/VTP/in/left.grip.force",
+        "name" : "/actions/VTP/in/left_grip_force",
         "type" : "vector1"
      },
      {
-        "name" : "/actions/VTP/in/right.grip.pull",
+        "name" : "/actions/VTP/in/right_grip_pull",
         "type" : "vector1"
      },
      {
-        "name" : "/actions/VTP/in/right.grip.force",
+        "name" : "/actions/VTP/in/right_grip_force",
         "type" : "vector1"
      },
      {
-        "name" : "/actions/VTP/in/left.a.click",
+        "name" : "/actions/VTP/in/left_a_click",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/left.a.touch",
+        "name" : "/actions/VTP/in/left_a_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/right.a.click",
+        "name" : "/actions/VTP/in/right_a_click",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/right.a.touch",
+        "name" : "/actions/VTP/in/right_a_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/left.b.click",
+        "name" : "/actions/VTP/in/left_b_click",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/left.b.touch",
+        "name" : "/actions/VTP/in/left_b_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/right.b.click",
+        "name" : "/actions/VTP/in/right_b_click",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/right.b.touch",
+        "name" : "/actions/VTP/in/right_b_touch",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/left.pose.raw",
+        "name" : "/actions/VTP/in/left_pose_raw",
         "type" : "pose"
      },
      {
-        "name" : "/actions/VTP/in/right.pose.raw",
+        "name" : "/actions/VTP/in/right_pose_raw",
         "type" : "pose"
      },
      {
-        "name" : "/actions/VTP/in/left.pose.base",
+        "name" : "/actions/VTP/in/left_pose_base",
         "type" : "pose"
      },
      {
-        "name" : "/actions/VTP/in/right.pose.base",
+        "name" : "/actions/VTP/in/right_pose_base",
         "type" : "pose"
      },
      {
-        "name" : "/actions/VTP/in/left.pose.tip",
+        "name" : "/actions/VTP/in/left_pose_tip",
         "type" : "pose"
      },
      {
-        "name" : "/actions/VTP/in/right.pose.tip",
+        "name" : "/actions/VTP/in/right_pose_tip",
         "type" : "pose"
      },
      {
-        "name" : "/actions/VTP/in/head.proximity",
+        "name" : "/actions/VTP/in/head_proximity",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/head.tap",
+        "name" : "/actions/VTP/in/head_tap",
         "type" : "boolean"
      },
      {
-        "name" : "/actions/VTP/in/head.pose.raw",
+        "name" : "/actions/VTP/in/head_pose_raw",
         "type" : "pose"
      }
   ],

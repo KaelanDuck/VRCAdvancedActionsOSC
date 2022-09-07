@@ -9,56 +9,56 @@ ActionSetHandle: /actions/VTP
 ConnectedParam: VTP_Active
 
 Params: 
-  LeftTrigger       : left.trigger.pull
-  RightTrigger      : right.trigger.pull
-  LeftGrip          : left.grip.pull
-  RightGrip         : right.grip.pull
-  LeftTriggerTouch  : left.trigger.touch
-  RightTriggerTouch : right.trigger.touch
+  LeftTrigger       : left_trigger_pull
+  RightTrigger      : right_trigger_pull
+  LeftGrip          : left_grip_pull
+  RightGrip         : right_grip_pull
+  LeftTriggerTouch  : left_trigger_touch
+  RightTriggerTouch : right_trigger_touch
 
 CustomParams:
 - OSCName: ControllerTipDistance
   Expression: glm.distance(v[0].position, v[1].position)
   Actions:
-  - left.pose.tip
-  - right.pose.tip
+  - left_pose_tip
+  - right_pose_tip
 - OSCName: RightControllerToHeadDist
   Expression: glm.distance(v[0].position, v[1].position)
   Actions:
-  - head.pose.raw
-  - right.pose.tip
+  - head_pose_raw
+  - right_pose_tip
 - OSCName: DistanceTip20cm
   # vector is 0.2m along the forward axis
   # transform using transform matrix for each controller and get distance between
   Expression: glm.distance(v[0].matrix * glm.vec4(0,0,-0.2,1), v[1].matrix * glm.vec4(0,0,-0.2,1))
   Actions:
-  - right.pose.tip
-  - left.pose.tip
+  - right_pose_tip
+  - left_pose_tip
 - OSCName: HeadsetXPos
   Expression: v[0].position.x
   Actions:
-  - head.pose.raw
+  - head_pose_raw
 ##################################
 - OSCName: LeftThumbTouch
   Expression: any(v)
   Actions:
-  - left.a.touch
-  - left.b.touch
-  - left.trackpad.touch
-  - left.joystick.touch
+  - left_a_touch
+  - left_b_touch
+  - left_trackpad_touch
+  - left_joystick_touch
 - OSCName: RightThumbTouch
   Expression: any(v)
   Actions:
-  - right.a.touch
-  - right.b.touch
-  - right.trackpad.touch
-  - right.joystick.touch
+  - right_a_touch
+  - right_b_touch
+  - right_trackpad_touch
+  - right_joystick_touch
 ####################################
 - OSCName: RightJoy.X
   Expression: v[0].x
   Actions:
-  - right.joystick.position
+  - right_joystick_position
 - OSCName: RightJoy.Y
   Expression: v[0].y
   Actions:
-  - right.joystick.position
+  - right_joystick_position
