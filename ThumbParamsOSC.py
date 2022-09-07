@@ -26,6 +26,7 @@ parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data 
 parser.add_argument('-d', '--debug', required=False, action='store_true', help='prints values for debugging')
 parser.add_argument('-i', '--ip', required=False, type=str, help="set OSC ip. Default=127.0.0.1")
 parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port. Default=9000")
+parser.add_argument('-c', '--config', required=False, type=str, help="config file to use. Default=config.yaml")
 args = parser.parse_args()
 
 # keep eval somewhat safe
@@ -116,7 +117,8 @@ def resource_path(relative_path):
 ###########################################################################################################
 
 # load config
-config = yaml.safe_load(open(resource_path('config.yaml')))
+CONFIGFILE = args.config if args.config else resource_path('config.yaml')
+config = yaml.safe_load(open(CONFIGFILE))
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 
