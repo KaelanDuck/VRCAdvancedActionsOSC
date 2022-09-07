@@ -15,18 +15,19 @@ Params:
   RightGrip         : right_grip_pull
   LeftTriggerTouch  : left_trigger_touch
   RightTriggerTouch : right_trigger_touch
+  HeadsetHeight     : head_pose_raw.position.y
 
 CustomParams:
 - OSCName: ControllerTipDistance
-  Expression: glm.distance(v[0].position, v[1].position)
+  Expression: glm.distance(v[0], v[1])
   Actions:
-  - left_pose_tip
-  - right_pose_tip
+  - left_pose_tip.position
+  - right_pose_tip.position
 - OSCName: RightControllerToHeadDist
-  Expression: glm.distance(v[0].position, v[1].position)
+  Expression: glm.distance(v[0], v[1])
   Actions:
-  - head_pose_raw
-  - right_pose_tip
+  - head_pose_raw.position
+  - right_pose_tip.position
 - OSCName: DistanceTip20cm
   # vector is 0.2m along the forward axis
   # transform using transform matrix for each controller and get distance between
@@ -53,12 +54,3 @@ CustomParams:
   - right_b_touch
   - right_trackpad_touch
   - right_joystick_touch
-####################################
-- OSCName: RightJoy.X
-  Expression: v[0].x
-  Actions:
-  - right_joystick_position
-- OSCName: RightJoy.Y
-  Expression: v[0].y
-  Actions:
-  - right_joystick_position

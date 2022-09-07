@@ -39,6 +39,8 @@ if os.name == 'nt':
 @dataclass
 class ActionHandle:
     handle : str
+    action_name : str
+    subattrs : Iterable[str]
     type: str
 
 @dataclass
@@ -100,23 +102,31 @@ openvr.VRInput().setActionManifestPath(action_path)
 actionSetHandle = openvr.VRInput().getActionSetHandle(config["ActionSetHandle"])
 actionSetHandleString = config["ActionSetHandle"] + "/in/"
 
+def action_base_name(act : str):
+    return act.split(".")[0]
+
+def action_attr_names(act : str):
+    parts = act.split(".")
+    if len(parts) == 1:
+        return []
+    else:
+        return parts[1:]
+
 # use the action set to map action names to their types, we will use this later
 typemap = {tp["name"].split("/")[-1]: tp["type"] for tp in json.load(open(action_path))["actions"]}
 
+final_value_type_check_has_run = False
+
 # check the actions specified in the config are actually in the action set, otherwise openvr will bork
 for name,act in config["Params"].items():
-    if act not in typemap:
-        raise RuntimeError(f"Action in config not in action map: {act}")
+    action = action_base_name(act)
+    if action not in typemap:
+        raise RuntimeError(f"Action in config not in action map: {action}")
 for param in config["CustomParams"]:
     for act in param["Actions"]:
-        if act not in typemap:
-            raise RuntimeError(f"Action in config not in action map: {act}")
-
-# check no funny types in basic parameters
-#TODO: allow for vec2.x/y and pose.pos.x etc... in basic parameters
-for name,act in config["Params"].items():
-    if typemap[act] not in ('vector1', 'boolean'):
-        raise RuntimeError(f"Action with type {typemap[act]} not allowed in basic params: {act}")
+        action = action_base_name(act)
+        if action not in typemap:
+            raise RuntimeError(f"Action in config not in action map: {action}")
 
 # Set up OpenVR Action Handles
 
@@ -126,8 +136,10 @@ basicParameters = [
     BasicParameter(
         name = name,
         actionHandle = ActionHandle(
-            handle = openvr.VRInput().getActionHandle(actionSetHandleString + act),
-            type = typemap[act]
+            handle = openvr.VRInput().getActionHandle(actionSetHandleString + action_base_name(act)),
+            action_name = act,
+            subattrs = action_attr_names(act),
+            type = typemap[action_base_name(act)]
         )
     ) for name,act in config["Params"].items()
 ]
@@ -145,8 +157,10 @@ customParameters = [
         name = param["OSCName"],
         expression = compile(param["Expression"], 'config.yaml', 'eval'), # compile the expression to use with eval later
         actionHandles = [ActionHandle(
-            handle = openvr.VRInput().getActionHandle(actionSetHandleString + act),
-            type = typemap[act]
+            handle = openvr.VRInput().getActionHandle(actionSetHandleString + action_base_name(act)),
+            action_name = act,
+            subattrs = action_attr_names(act),
+            type = typemap[action_base_name(act)]
         ) for act in param["Actions"]]
     ) for param in config["CustomParams"]
 ]
@@ -192,15 +206,26 @@ def get_vec2(actionHandle : openvr.VRActionHandle_t) -> glm.vec2:
 ###########################################
 
 # use the correct function to resolve the action handle to a value
-def get_value(actionHandle : openvr.VRActionHandle_t, typestr : str):
-    if typestr == "boolean":
-        return get_digital(actionHandle)
-    elif typestr == "vector1":
-        return get_analog(actionHandle)
-    elif typestr == "pose":
-        return get_pose(actionHandle)
-    else: # typestr == "vector2"
-        return get_vec2(actionHandle)
+def get_value(actionHandle : ActionHandle):
+    if actionHandle.type == "boolean":
+        val = get_digital(actionHandle.handle)
+    elif actionHandle.type == "vector1":
+        val = get_analog(actionHandle.handle)
+    elif actionHandle.type == "pose":
+        val = get_pose(actionHandle.handle)
+    else: # actionHandle.type == "vector2"
+        val = get_vec2(actionHandle.handle)
+    
+    # iterate through attributes to get what's specified in the config
+    for attr in actionHandle.subattrs:
+        val = getattr(val, attr, None)
+    
+    # getattr will set to None instead of raising exception when there is a missing attribute
+    if val == None:
+        raise RuntimeError(f"Unable to resolve attributes for action: {actionHandle.action_name}")
+    
+    return val
+
 
 ##################################################
 
@@ -225,7 +250,7 @@ def handle_input():
     # basic parameters
     OSCMsgs += [OSCMessage(
         path = param.name, 
-        value = get_value(param.actionHandle.handle, param.actionHandle.type) 
+        value = get_value(param.actionHandle) 
     ) for param in basicParameters]
 
     # custom expression parameters
@@ -234,12 +259,17 @@ def handle_input():
         value = eval(
             param.expression,
             eval_globals,
-            {"v": [
-                get_value(ah.handle, ah.type)
-                for ah in param.actionHandles
-            ]}
+            {"v": [get_value(ah) for ah in param.actionHandles]}
         )
     ) for param in customParameters]
+
+    # check all the types are valid
+    global final_value_type_check_has_run
+    if not final_value_type_check_has_run:
+        final_value_type_check_has_run = True    # performance
+        for msg in OSCMsgs:
+            if type(msg.value) not in [float, int, bool]:
+                raise RuntimeError(f"Parameter {msg.path} has invalid type, must be bool/float/int, found: {type(msg.value)}")
 
     # send all the messages!
     for msg in OSCMsgs:
@@ -287,9 +317,9 @@ while True:
         cls()
         exit()
     except Exception:
-        cls()
+        #cls()
         print("UNEXPECTED ERROR\n")
         print("Please Create an Issue on GitHub with the following information:\n")
         traceback.print_exc()
-        input("\nPress ENTER to exit")
+        #input("\nPress ENTER to exit")
         exit()
