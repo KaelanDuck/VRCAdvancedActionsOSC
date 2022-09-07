@@ -8,6 +8,7 @@ import traceback
 import openvr
 import openvr.error_code
 import sys
+from sys import exit
 import os
 import time
 import ctypes
