@@ -143,12 +143,12 @@
 		{
 			"name" : "/actions/VTP/in/left_skeleton",
 			"type" : "skeleton",
-      "skeleton" : "/skeleton/hand/left"
+      		"skeleton" : "/skeleton/hand/left"
 		},
 		{
 			"name" : "/actions/VTP/in/right_skeleton",
 			"type" : "skeleton",
-      "skeleton" : "/skeleton/hand/right"
+      		"skeleton" : "/skeleton/hand/right"
 		}
 	],
 	"default_bindings" : [
