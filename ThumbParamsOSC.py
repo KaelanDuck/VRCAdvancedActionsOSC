@@ -6,6 +6,7 @@ from typing import Any, Iterable
 import yaml
 import traceback
 import openvr
+import openvr.error_code
 import sys
 import os
 import time
@@ -67,6 +68,32 @@ class DevicePose:
     rotation : glm.quat
     velocity : glm.vec3
     angvelocity : glm.vec3
+
+# skeleton data classes
+# use named attributes for easy referencing in an action
+class FingerDataCurl(list):
+    def __new__(cls, arr) -> 'FingerDataCurl':
+        self = super().__new__(cls, arr)
+        self.thumb  : float = arr[0]
+        self.index  : float = arr[1]
+        self.middle : float = arr[2]
+        self.ring   : float = arr[3]
+        self.pinky  : float = arr[4]
+        return self
+
+class FingerDataSplay(list):
+    def __new__(cls, arr) -> 'FingerDataSplay':
+        self = super().__new__(cls, arr)
+        self.index  : float = arr[0]
+        self.middle : float = arr[1]
+        self.ring   : float = arr[2]
+        self.pinky  : float = arr[3]
+        return self
+
+@dataclass
+class HandSkeleton:
+    fingerCurl : FingerDataCurl
+    fingerSplay : FingerDataSplay
 
 ###############################################
 
@@ -203,6 +230,17 @@ def get_vec2(actionHandle : openvr.VRActionHandle_t) -> glm.vec2:
     iaad = openvr.VRInput().getAnalogActionData(actionHandle, openvr.k_ulInvalidInputValueHandle)
     return glm.vec2(iaad.x, iaad.y)
 
+def get_skeleton(actionHandle : openvr.VRActionHandle_t) -> HandSkeleton:
+    try:
+        skelly : openvr.VRSkeletalSummaryData_t = openvr.VRInput().getSkeletalSummaryData(actionHandle, openvr.VRSummaryType_FromDevice)
+        curl = [float(x) for x in skelly.flFingerCurl]
+        splay = [float(x) for x in skelly.flFingerSplay]
+    except openvr.error_code.InputError_NoData:
+        curl = [0.0] * 5
+        splay = [0.0] * 4
+
+    return HandSkeleton(FingerDataCurl(curl), FingerDataSplay(splay))
+
 ###########################################
 
 # use the correct function to resolve the action handle to a value
@@ -213,8 +251,10 @@ def get_value(actionHandle : ActionHandle):
         val = get_analog(actionHandle.handle)
     elif actionHandle.type == "pose":
         val = get_pose(actionHandle.handle)
-    else: # actionHandle.type == "vector2"
+    elif actionHandle.type == "vector2":
         val = get_vec2(actionHandle.handle)
+    elif actionHandle.type == "skeleton":
+        val = get_skeleton(actionHandle.handle)
     
     # iterate through attributes to get what's specified in the config
     for attr in actionHandle.subattrs:
