@@ -22,7 +22,7 @@ import math
 import glm
 
 # Argument Parser
-parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data from SteamVR and sends it to an OSC-Client')
+parser = argparse.ArgumentParser(description='AdvancedActionsOSC: Takes button data from SteamVR and sends it to an OSC-Client')
 parser.add_argument('-d', '--debug', required=False, action='store_true', help='prints values for debugging')
 parser.add_argument('-i', '--ip', required=False, type=str, help="set OSC ip. Default=127.0.0.1")
 parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port. Default=9000")
@@ -35,7 +35,7 @@ eval_globals = {"__builtins__": eval_allowed_builtins, "np": np, "math": math, "
 
 # Set window name on Windows
 if os.name == 'nt':
-    ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
+    ctypes.windll.kernel32.SetConsoleTitleW("AdvancedActionsOSC")
 
 ##################################################
 # some classes for storing data
@@ -345,7 +345,7 @@ def handle_input():
 
 
 cls()
-print("ThumbParamsOSC running...\n")
+print("AdvancedActionsOSC running...\n")
 print("IP:\t\t", IP)
 print("Port:\t\t", PORT)
 print("\nYou can minimize this window.")

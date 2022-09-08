@@ -1,2 +1,2 @@
 @echo off
-start ThumbParamsOSC.exe --debug
+start VRCAdvancedActionsOSC.exe --debug

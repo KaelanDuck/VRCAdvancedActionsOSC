@@ -11,9 +11,9 @@ bin_excludes = ["_bz2.pyd", "_decimal.pyd", "_hashlib.pyd", "_lzma.pyd", "_queue
 build_exe_options = {"packages": packages, "excludes": exclude, "include_files": file_include, "bin_excludes": bin_excludes}
 
 setup(
-    name="ThumbParamsOSC",
+    name="AdvancedActionsOSC",
     version="0.3.1",
-    description="ThumbParamsOSC",
+    description="AdvancedActionsOSC",
     options={"build_exe": build_exe_options},
-    executables=[Executable("ThumbParamsOSC.py", base=False, icon="icon.ico")],
+    executables=[Executable("AdvancedActionsOSC.py", base=False, icon="icon.ico")],
 )

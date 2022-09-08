@@ -4,9 +4,9 @@ Port: 9000
 
 BindingsFolder: bindings
 ActionManifestFile: thumbparams_actions.json
-ActionSetHandle: /actions/VTP
+ActionSetHandle: /actions/VAA
 
-ConnectedParam: VTP_Active
+ConnectedParam: VAA_Active
 
 Params: 
   LeftTrigger       : left_trigger_pull

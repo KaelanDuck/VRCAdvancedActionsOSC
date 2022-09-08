@@ -1,5 +1,7 @@
-# <img src="https://raw.githubusercontent.com/I5UCC/VRCThumbParamsOSC/main/icon.ico" width="32" height="32"> ThumbParamsOSC
+# <img src="https://raw.githubusercontent.com/I5UCC/VRCThumbParamsOSC/main/icon.ico" width="32" height="32"> AdvancedActionsOSC
 OSC program that makes all SteamVR controller actions accessible as Avatar Parameters with a flexible configuration system.
+
+Based on ThumbParamsOSC by ![I5UCC](https://github.com/I5UCC)
 
 Works for both VRChat and ChilloutVR but requires an OSC Mod when used in ChilloutVR.
 
@@ -12,8 +14,8 @@ Activate OSC in VRChat: <br/><br/>
 
 In Action menu, got to Options>OSC>Enable <br/>
 
-Then just run the `ThumbParamsOSC.exe` and you are all set! <br/>
-## You might need to restart ThumbParamsOSC.exe or even SteamVR after first run
+Then just run the `AdvancedActionsOSC.exe` and you are all set! <br/>
+## You might need to restart AdvancedActionsOSC.exe or even SteamVR after first run
 
 # Configuration
 
@@ -27,7 +29,7 @@ Configuration is done via `config.yaml`, it is intended to be largely human read
 | BindingsFolder | Folder for SteamVR bindings |
 | ActionManifestFile | Action set used by steamvr |
 | ActionSetHandle | Internal name used for actions |
-| ConnectedParam | OSC parameter name set to true when ThumbParamsOSC runs |
+| ConnectedParam | OSC parameter name set to true when AdvancedActionsOSC runs |
 
 When the program runs, it will send the parameter name specified by ConnectedParam to true. You can use that to transition to a different set of animator states when the program runs, for example, to use more complex hand gestures when available.
 
@@ -210,7 +212,7 @@ Once avatar parameters are set on the avatar descriptor, they can be used in ani
 If you use float parameters to control some motion on your avatar, you may need to use a tool such as OSCmooth to ensure other players see smooth changes to that motion, as animator parameters are not smoothed unless you have a puppet menu open for that parameter.
 
 # Command line Arguments
-You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
+You can run this by using ```AdvancedActionsOSC.exe {Arguments}``` in command line.
 
 
 | Option | Value |
