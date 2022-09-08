@@ -30,34 +30,34 @@
          "skeleton" : [],
          "sources" : []
       },
-      "/actions/VAA" : {
+      "/actions/vaa" : {
          "poses" : [
             {
-               "output" : "/actions/VAA/in/left_pose_base",
+               "output" : "/actions/vaa/in/left_pose_base",
                "path" : "/user/hand/left/pose/base"
             },
             {
-               "output" : "/actions/VAA/in/right_pose_base",
+               "output" : "/actions/vaa/in/right_pose_base",
                "path" : "/user/hand/right/pose/base"
             },
             {
-               "output" : "/actions/VAA/in/left_pose_raw",
+               "output" : "/actions/vaa/in/left_pose_raw",
                "path" : "/user/hand/left/pose/raw"
             },
             {
-               "output" : "/actions/VAA/in/right_pose_raw",
+               "output" : "/actions/vaa/in/right_pose_raw",
                "path" : "/user/hand/right/pose/raw"
             },
             {
-               "output" : "/actions/VAA/in/left_pose_tip",
+               "output" : "/actions/vaa/in/left_pose_tip",
                "path" : "/user/hand/left/pose/tip"
             },
             {
-               "output" : "/actions/VAA/in/right_pose_tip",
+               "output" : "/actions/vaa/in/right_pose_tip",
                "path" : "/user/hand/right/pose/tip"
             },
             {
-               "output" : "/actions/VAA/in/head_pose_raw",
+               "output" : "/actions/vaa/in/head_pose_raw",
                "path" : "/user/head/pose/raw"
             }
          ],
@@ -65,10 +65,10 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/VAA/in/left_trigger_pull"
+                     "output" : "/actions/vaa/in/left_trigger_pull"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/left_trigger_touch"
+                     "output" : "/actions/vaa/in/left_trigger_touch"
                   }
                },
                "mode" : "trigger",
@@ -77,13 +77,13 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/left_joystick_click"
+                     "output" : "/actions/vaa/in/left_joystick_click"
                   },
                   "position" : {
-                     "output" : "/actions/VAA/in/left_joystick_position"
+                     "output" : "/actions/vaa/in/left_joystick_position"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/left_joystick_touch"
+                     "output" : "/actions/vaa/in/left_joystick_touch"
                   }
                },
                "mode" : "joystick",
@@ -92,7 +92,7 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/VAA/in/left_grip_pull"
+                     "output" : "/actions/vaa/in/left_grip_pull"
                   }
                },
                "mode" : "trigger",
@@ -101,10 +101,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/left_a_click"
+                     "output" : "/actions/vaa/in/left_a_click"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/left_a_touch"
+                     "output" : "/actions/vaa/in/left_a_touch"
                   }
                },
                "mode" : "button",
@@ -113,10 +113,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/left_b_click"
+                     "output" : "/actions/vaa/in/left_b_click"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/left_b_touch"
+                     "output" : "/actions/vaa/in/left_b_touch"
                   }
                },
                "mode" : "button",
@@ -125,10 +125,10 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/VAA/in/right_trigger_pull"
+                     "output" : "/actions/vaa/in/right_trigger_pull"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/right_trigger_touch"
+                     "output" : "/actions/vaa/in/right_trigger_touch"
                   }
                },
                "mode" : "trigger",
@@ -137,13 +137,13 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/right_joystick_click"
+                     "output" : "/actions/vaa/in/right_joystick_click"
                   },
                   "position" : {
-                     "output" : "/actions/VAA/in/right_joystick_position"
+                     "output" : "/actions/vaa/in/right_joystick_position"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/right_joystick_touch"
+                     "output" : "/actions/vaa/in/right_joystick_touch"
                   }
                },
                "mode" : "joystick",
@@ -152,7 +152,7 @@
             {
                "inputs" : {
                   "pull" : {
-                     "output" : "/actions/VAA/in/right_grip_pull"
+                     "output" : "/actions/vaa/in/right_grip_pull"
                   }
                },
                "mode" : "trigger",
@@ -161,10 +161,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/right_a_click"
+                     "output" : "/actions/vaa/in/right_a_click"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/right_a_touch"
+                     "output" : "/actions/vaa/in/right_a_touch"
                   }
                },
                "mode" : "button",
@@ -173,10 +173,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/right_b_click"
+                     "output" : "/actions/vaa/in/right_b_click"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/right_b_touch"
+                     "output" : "/actions/vaa/in/right_b_touch"
                   }
                },
                "mode" : "button",
@@ -185,10 +185,10 @@
             {
                "inputs" : {
                   "position" : {
-                     "output" : "/actions/VAA/in/left_trackpad_position"
+                     "output" : "/actions/vaa/in/left_trackpad_position"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/left_trackpad_touch"
+                     "output" : "/actions/vaa/in/left_trackpad_touch"
                   }
                },
                "mode" : "trackpad",
@@ -197,10 +197,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/left_b_click"
+                     "output" : "/actions/vaa/in/left_b_click"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/left_b_touch"
+                     "output" : "/actions/vaa/in/left_b_touch"
                   }
                },
                "mode" : "button",
@@ -209,10 +209,10 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/left_a_click"
+                     "output" : "/actions/vaa/in/left_a_click"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/left_a_touch"
+                     "output" : "/actions/vaa/in/left_a_touch"
                   }
                },
                "mode" : "button",
@@ -221,10 +221,10 @@
             {
                "inputs" : {
                   "position" : {
-                     "output" : "/actions/VAA/in/right_trackpad_position"
+                     "output" : "/actions/vaa/in/right_trackpad_position"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/right_trackpad_touch"
+                     "output" : "/actions/vaa/in/right_trackpad_touch"
                   }
                },
                "mode" : "trackpad",
@@ -233,13 +233,13 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/right_joystick_click"
+                     "output" : "/actions/vaa/in/right_joystick_click"
                   },
                   "position" : {
-                     "output" : "/actions/VAA/in/right_joystick_position"
+                     "output" : "/actions/vaa/in/right_joystick_position"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/right_joystick_touch"
+                     "output" : "/actions/vaa/in/right_joystick_touch"
                   }
                },
                "mode" : "joystick",
@@ -248,13 +248,13 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/left_joystick_click"
+                     "output" : "/actions/vaa/in/left_joystick_click"
                   },
                   "position" : {
-                     "output" : "/actions/VAA/in/left_joystick_position"
+                     "output" : "/actions/vaa/in/left_joystick_position"
                   },
                   "touch" : {
-                     "output" : "/actions/VAA/in/left_joystick_touch"
+                     "output" : "/actions/vaa/in/left_joystick_touch"
                   }
                },
                "mode" : "joystick",
@@ -263,7 +263,7 @@
             {
                "inputs" : {
                   "force" : {
-                     "output" : "/actions/VAA/in/left_grip_force"
+                     "output" : "/actions/vaa/in/left_grip_force"
                   }
                },
                "mode" : "force_sensor",
@@ -272,7 +272,7 @@
             {
                "inputs" : {
                   "force" : {
-                     "output" : "/actions/VAA/in/right_grip_force"
+                     "output" : "/actions/vaa/in/right_grip_force"
                   }
                },
                "mode" : "force_sensor",
@@ -281,7 +281,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/head_proximity"
+                     "output" : "/actions/vaa/in/head_proximity"
                   }
                },
                "mode" : "button",
@@ -290,7 +290,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/VAA/in/head_tap"
+                     "output" : "/actions/vaa/in/head_tap"
                   }
                },
                "mode" : "button",
