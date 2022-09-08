@@ -1,0 +1,42 @@
+IP: 127.0.0.1
+Port: 9000
+
+BindingsFolder: bindings
+ActionManifestFile: thumbparams_actions.json
+ActionSetHandle: /actions/VAA
+
+# This config reports controller positions relative to the headset
+
+Params: {}
+
+CustomParams:
+- OSCName: VAA/Left/X
+  Expression: (v[0]-v[1]).x
+  Actions:
+  - left_pose_tip.position
+  - head_pose_raw.position
+- OSCName: VAA/Left/Y
+  Expression: (v[0]-v[1]).y
+  Actions:
+  - left_pose_tip.position
+  - head_pose_raw.position
+- OSCName: VAA/Left/Z
+  Expression: (v[0]-v[1]).z
+  Actions:
+  - left_pose_tip.position
+  - head_pose_raw.position
+- OSCName: VAA/Right/X
+  Expression: (v[0]-v[1]).x
+  Actions:
+  - right_pose_tip.position
+  - head_pose_raw.position
+- OSCName: VAA/Right/Y
+  Expression: (v[0]-v[1]).y
+  Actions:
+  - right_pose_tip.position
+  - head_pose_raw.position
+- OSCName: VAA/Right/Z
+  Expression: (v[0]-v[1]).z
+  Actions:
+  - right_pose_tip.position
+  - head_pose_raw.position

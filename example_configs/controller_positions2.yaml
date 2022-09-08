@@ -1,0 +1,43 @@
+IP: 127.0.0.1
+Port: 9000
+
+BindingsFolder: bindings
+ActionManifestFile: thumbparams_actions.json
+ActionSetHandle: /actions/VAA
+
+# This config reports controller positions in the headset frame of reference
+# -z is forward, +x is right, +y is up
+
+Params: {}
+
+CustomParams:
+- OSCName: VAA/Left/X
+  Expression: (glm.affineInverse(v[0]) * glm.vec4(v[1], 1.0)).x
+  Actions:
+  - head_pose_raw.matrix
+  - left_pose_tip.position
+- OSCName: VAA/Left/Y
+  Expression: (glm.affineInverse(v[0]) * glm.vec4(v[1], 1.0)).y
+  Actions:
+  - head_pose_raw.matrix
+  - left_pose_tip.position
+- OSCName: VAA/Left/Z
+  Expression: (glm.affineInverse(v[0]) * glm.vec4(v[1], 1.0)).z
+  Actions:
+  - head_pose_raw.matrix
+  - left_pose_tip.position
+- OSCName: VAA/Right/X
+  Expression: (glm.affineInverse(v[0]) * glm.vec4(v[1], 1.0)).x
+  Actions:
+  - head_pose_raw.matrix
+  - right_pose_tip.position
+- OSCName: VAA/Right/Y
+  Expression: (glm.affineInverse(v[0]) * glm.vec4(v[1], 1.0)).y
+  Actions:
+  - head_pose_raw.matrix
+  - right_pose_tip.position
+- OSCName: VAA/Right/Z
+  Expression: (glm.affineInverse(v[0]) * glm.vec4(v[1], 1.0)).z
+  Actions:
+  - head_pose_raw.matrix
+  - right_pose_tip.position

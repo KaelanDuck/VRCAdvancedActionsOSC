@@ -1,0 +1,32 @@
+IP: 127.0.0.1
+Port: 9000
+
+BindingsFolder: bindings
+ActionManifestFile: thumbparams_actions.json
+ActionSetHandle: /actions/VAA
+
+# This config creates some suitable parameters
+
+ConnectedParam: VAA/Active
+
+Params:
+  VAA/Left/Trigger_Pull: left_trigger_pull
+  VAA/Left/Trigger_Touch: left_trigger_touch
+  VAA/Left/Grip_Pull: left_grip_pull
+  VAA/Right/Trigger_Pull: right_trigger_pull
+  VAA/Right/Trigger_Touch: right_trigger_touch
+  VAA/Right/Grip_Pull: right_grip_pull
+
+CustomParams:
+- OSCName: VAA/Left/Thumb_Touch
+  Expression: any(v)
+  Actions:
+  - left_a_touch
+  - left_b_touch
+  - left_joystick_touch
+- OSCName: VAA/Right/Thumb_Touch
+  Expression: any(v)
+  Actions:
+  - right_a_touch
+  - right_b_touch
+  - right_joystick_touch

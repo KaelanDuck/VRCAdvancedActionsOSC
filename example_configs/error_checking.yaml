@@ -1,0 +1,45 @@
+IP: 127.0.0.1
+Port: 9000
+
+BindingsFolder: bindings
+ActionManifestFile: thumbparams_actions.json
+ActionSetHandle: /actions/VAA
+
+# This config should generate lots of errors when you uncomment parts of it
+
+Params:
+  WorksNormally: left_a_touch
+  #UnknownAction: left_awa_touch
+  #BadType: left_skeleton.fingerCurl
+  #ActionWithNoAttributes: left_a_touch.x
+  #ActionWithWrongAttributeName: left_skeleton.oopsie.x
+
+CustomParams:
+- OSCName: WorksNormally2
+  Expression: v[0]
+  Actions:
+  - left_a_touch
+- OSCName: ConstantOneWithNoActions
+  Expression: math.sin(math.pi / 2.0)
+  Actions: []
+#- OSCName: UnknownAction2
+#  Expression: v[0]
+#  Actions:
+#  - awawawawawawa
+#- OSCName: BadExpressionType
+#  Expression: "[1.0]"
+#  Actions: []
+#- OSCName: ActionWithNoAttributes2
+#  Expression: v[0]
+#  Actions:
+#  - left_a_touch.x
+#- OSCName: ActionWithWrongAttributeName2
+#  Expression: v[0]
+#  Actions:
+#  - left_skeleton.oopsie.x
+#- OSCName: UsesMissingBuiltin
+#  Expression: eval(1.0)
+#  Actions: []
+#- OSCName: UsesDoubleUnderscores
+#  Expression: "[c for c in ().__class__.__base__.__subclasses__() if c.__name__ == 'catch_warnings'][0]()._module.__builtins__['__import__']('os').system('echo pwned nerd')"
+#  Actions: []

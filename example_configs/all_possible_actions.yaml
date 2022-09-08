@@ -1,0 +1,113 @@
+IP: 127.0.0.1
+Port: 9000
+
+BindingsFolder: bindings
+ActionManifestFile: thumbparams_actions.json
+ActionSetHandle: /actions/VAA
+
+ConnectedParam: VAA/Active
+
+###################################################################
+#
+# This configuration file exports all possible raw parameters
+# For simplicity, it only uses the tip pose of the controllers
+# It also does not expose the transform matrices
+#
+###################################################################
+
+Params:
+  # simple parameters
+  VAA/left/joystick/position/x      : left_joystick_position.x
+  VAA/left/joystick/position/y      : left_joystick_position.y
+  VAA/left/joystick/click           : left_joystick_click
+  VAA/left/joystick/touch           : left_joystick_touch
+  VAA/left/trackpad/position/x      : left_trackpad_position.x
+  VAA/left/trackpad/position/y      : left_trackpad_position.y
+  VAA/left/trackpad/touch           : left_trackpad_touch
+  VAA/left/trigger/pull             : left_trigger_pull
+  VAA/left/trigger/touch            : left_trigger_touch
+  VAA/left/grip/pull                : left_grip_pull
+  VAA/left/grip/force               : left_grip_force
+  VAA/left/A/click                  : left_a_click
+  VAA/left/A/touch                  : left_a_touch
+  VAA/left/B/click                  : left_b_click
+  VAA/left/B/touch                  : left_b_touch
+  VAA/right/joystick/position/x     : right_joystick_position.x
+  VAA/right/joystick/position/y     : right_joystick_position.y
+  VAA/right/joystick/click          : right_joystick_click
+  VAA/right/joystick/touch          : right_joystick_touch
+  VAA/right/trackpad/position/x     : right_trackpad_position.x
+  VAA/right/trackpad/position/y     : right_trackpad_position.y
+  VAA/right/trackpad/touch          : right_trackpad_touch
+  VAA/right/trigger/pull            : right_trigger_pull
+  VAA/right/trigger/touch           : right_trigger_touch
+  VAA/right/grip/pull               : right_grip_pull
+  VAA/right/grip/force              : right_grip_force
+  VAA/right/A/click                 : right_a_click
+  VAA/right/A/touch                 : right_a_touch
+  VAA/right/B/click                 : right_b_click
+  VAA/right/B/touch                 : right_b_touch
+  VAA/head/proximity                : head_proximity
+  VAA/head/tap                      : head_tap
+  # poses
+  VAA/left/pose/position/x          : left_pose_tip.position.x
+  VAA/left/pose/position/y          : left_pose_tip.position.y
+  VAA/left/pose/position/z          : left_pose_tip.position.z
+  VAA/left/pose/rotation/w          : left_pose_tip.rotation.w
+  VAA/left/pose/rotation/x          : left_pose_tip.rotation.x
+  VAA/left/pose/rotation/y          : left_pose_tip.rotation.y
+  VAA/left/pose/rotation/z          : left_pose_tip.rotation.z
+  VAA/left/pose/velocity/x          : left_pose_tip.velocity.x
+  VAA/left/pose/velocity/y          : left_pose_tip.velocity.y
+  VAA/left/pose/velocity/z          : left_pose_tip.velocity.z
+  VAA/left/pose/angvelocity/x       : left_pose_tip.angvelocity.x
+  VAA/left/pose/angvelocity/y       : left_pose_tip.angvelocity.y
+  VAA/left/pose/angvelocity/z       : left_pose_tip.angvelocity.z
+  VAA/right/pose/position/x         : right_pose_tip.position.x
+  VAA/right/pose/position/y         : right_pose_tip.position.y
+  VAA/right/pose/position/z         : right_pose_tip.position.z
+  VAA/right/pose/rotation/w         : right_pose_tip.rotation.w
+  VAA/right/pose/rotation/x         : right_pose_tip.rotation.x
+  VAA/right/pose/rotation/y         : right_pose_tip.rotation.y
+  VAA/right/pose/rotation/z         : right_pose_tip.rotation.z
+  VAA/right/pose/velocity/x         : right_pose_tip.velocity.x
+  VAA/right/pose/velocity/y         : right_pose_tip.velocity.y
+  VAA/right/pose/velocity/z         : right_pose_tip.velocity.z
+  VAA/right/pose/angvelocity/x      : right_pose_tip.angvelocity.x
+  VAA/right/pose/angvelocity/y      : right_pose_tip.angvelocity.y
+  VAA/right/pose/angvelocity/z      : right_pose_tip.angvelocity.z
+  VAA/head/pose/position/x          : head_pose_raw.position.x
+  VAA/head/pose/position/y          : head_pose_raw.position.y
+  VAA/head/pose/position/z          : head_pose_raw.position.z
+  VAA/head/pose/rotation/w          : head_pose_raw.rotation.w
+  VAA/head/pose/rotation/x          : head_pose_raw.rotation.x
+  VAA/head/pose/rotation/y          : head_pose_raw.rotation.y
+  VAA/head/pose/rotation/z          : head_pose_raw.rotation.z
+  VAA/head/pose/velocity/x          : head_pose_raw.velocity.x
+  VAA/head/pose/velocity/y          : head_pose_raw.velocity.y
+  VAA/head/pose/velocity/z          : head_pose_raw.velocity.z
+  VAA/head/pose/angvelocity/x       : head_pose_raw.angvelocity.x
+  VAA/head/pose/angvelocity/y       : head_pose_raw.angvelocity.y
+  VAA/head/pose/angvelocity/z       : head_pose_raw.angvelocity.z
+  
+  # skeleton
+  VAA/left/fingers/curl/thumb       : left_skeleton.fingerCurl.thumb
+  VAA/left/fingers/curl/index       : left_skeleton.fingerCurl.index
+  VAA/left/fingers/curl/middle      : left_skeleton.fingerCurl.middle
+  VAA/left/fingers/curl/ring        : left_skeleton.fingerCurl.ring
+  VAA/left/fingers/curl/pinky       : left_skeleton.fingerCurl.pinky
+  VAA/left/fingers/splay/index      : left_skeleton.fingerSplay.index
+  VAA/left/fingers/splay/middle     : left_skeleton.fingerSplay.middle
+  VAA/left/fingers/splay/ring       : left_skeleton.fingerSplay.ring
+  VAA/left/fingers/splay/pinky      : left_skeleton.fingerSplay.pinky
+  VAA/right/fingers/curl/thumb       : right_skeleton.fingerCurl.thumb
+  VAA/right/fingers/curl/index       : right_skeleton.fingerCurl.index
+  VAA/right/fingers/curl/middle      : right_skeleton.fingerCurl.middle
+  VAA/right/fingers/curl/ring        : right_skeleton.fingerCurl.ring
+  VAA/right/fingers/curl/pinky       : right_skeleton.fingerCurl.pinky
+  VAA/right/fingers/splay/index      : right_skeleton.fingerSplay.index
+  VAA/right/fingers/splay/middle     : right_skeleton.fingerSplay.middle
+  VAA/right/fingers/splay/ring       : right_skeleton.fingerSplay.ring
+  VAA/right/fingers/splay/pinky      : right_skeleton.fingerSplay.pinky
+
+CustomParams: []

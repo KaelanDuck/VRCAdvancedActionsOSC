@@ -1,0 +1,46 @@
+IP: 127.0.0.1
+Port: 9000
+
+BindingsFolder: bindings
+ActionManifestFile: thumbparams_actions.json
+ActionSetHandle: /actions/VAA
+
+# This config provides the same interface ThumbParamsOSC does
+
+Params:
+  LeftTrigger: left_trigger_pull
+  RightTrigger: right_trigger_pull
+  LeftAButton: left_a_touch
+  RightAButton: right_a_touch
+  LeftBButton: left_b_touch
+  RightBButton: right_b_touch
+  LeftTrackPad: left_trackpad_touch
+  RightTrackPad: right_trackpad_touch
+  LeftThumbStick: left_thumbstick_touch
+  RightThumbStick: right_thumbstick_touch
+
+CustomParams:
+- OSCName: LeftABButtons
+  Expression: v[0] and v[1]
+  Actions:
+  - left_a_touch
+  - left_b_touch
+- OSCName: RightABButtons
+  Expression: v[0] and v[1]
+  Actions:
+  - right_a_touch
+  - right_b_touch
+- OSCName: LeftThumb
+  Expression: len(v) - ([True] + v)[::-1].index(True)
+  Actions:
+  - left_a_touch
+  - left_b_touch
+  - left_trackpad_touch
+  - left_joystick_touch
+- OSCName: RightThumb
+  Expression: len(v) - ([True] + v)[::-1].index(True)
+  Actions:
+  - right_a_touch
+  - right_b_touch
+  - right_trackpad_touch
+  - right_joystick_touch
