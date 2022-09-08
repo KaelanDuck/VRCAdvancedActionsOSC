@@ -1,7 +1,7 @@
 # <img src="https://raw.githubusercontent.com/I5UCC/VRCThumbParamsOSC/main/icon.ico" width="32" height="32"> AdvancedActionsOSC
 OSC program that makes all SteamVR controller actions accessible as Avatar Parameters with a flexible configuration system.
 
-Based on ThumbParamsOSC by ![I5UCC](https://github.com/I5UCC)
+Based on ThumbParamsOSC by [I5UCC](https://github.com/I5UCC)
 
 Works for both VRChat and ChilloutVR but requires an OSC Mod when used in ChilloutVR.
 
@@ -24,12 +24,14 @@ Configuration is done via `config.yaml`, it is intended to be largely human read
 ## Basic settings
 | Key | Value |
 | --- | --- |
-| IP | IP address of OSC client |
-| Port | OSC client listen port |
-| BindingsFolder | Folder for SteamVR bindings |
-| ActionManifestFile | Action set used by steamvr |
-| ActionSetHandle | Internal name used for actions |
-| ConnectedParam | OSC parameter name set to true when AdvancedActionsOSC runs |
+| `IP` | IP address of OSC client |
+| `Port` | OSC client listen port |
+| `BindingsFolder` | Folder for SteamVR bindings |
+| `ActionManifestFile` | Action set used by steamvr |
+| `ActionSetHandle` | Internal name used for actions |
+| `ConnectedParam` | OSC parameter name set to true when AdvancedActionsOSC runs |
+| `Params` | See below |
+| `CustomParams` | See below |
 
 When the program runs, it will send the parameter name specified by ConnectedParam to true. You can use that to transition to a different set of animator states when the program runs, for example, to use more complex hand gestures when available.
 
@@ -42,32 +44,32 @@ Controllers are defined by `left_xxx` and `right_xxx` action names, for example 
 
 | Action name | Description |
 | --- | --- |
-| xxx_joystick_position | Thumbstick position |
-| xxx_joystick_click | Thumbstick click |
-| xxx_joystick_touch | Thumbstick touch sensor |
-| xxx_trackpad_position | Trackpad position |
-| xxx_trackpad_click | Trackpad click |
-| xxx_trackpad_touch | Trackpad touch sensor |
-| xxx_trigger_pull | Amount the main trigger is pulled in |
-| xxx_trigger_touch | Touch sensor on the main trigger |
-| xxx_grip_pull | Amount the grip trigger is squeezed |
-| xxx_grip_force | Force used on the grip sensor (Index Controller) |
-| xxx_a_click | Lower button (A/X) pressed in |
-| xxx_a_touch | Lower button (A/X) touched by thumb |
-| xxx_b_click | Upper button (B/Y) pressed in |
-| xxx_b_touch | Upper Button (B/Y) touched by thumb |
-| xxx_pose_raw | Raw controller pose returned by SteamVR |
-| xxx_pose_tip | Pose centered at the controller tip |
-| xxx_pose_base | Base controller pose returned by SteamVR |
-| xxx_skeleton | Controller Skeleton (not reliable on Oculus) |
+| `(left/right)_joystick_position` | Thumbstick position |
+| `(left/right)_joystick_click` | Thumbstick click |
+| `(left/right)_joystick_touch` | Thumbstick touch sensor |
+| `(left/right)_trackpad_position` | Trackpad position |
+| `(left/right)_trackpad_click` | Trackpad click |
+| `(left/right)_trackpad_touch` | Trackpad touch sensor |
+| `(left/right)_trigger_pull` | Amount the main trigger is pulled in |
+| `(left/right)_trigger_touch` | Touch sensor on the main trigger |
+| `(left/right)_grip_pull` | Amount the grip trigger is squeezed |
+| `(left/right)_grip_force` | Force used on the grip sensor (Index Controller) |
+| `(left/right)_a_click` | Lower button (A/X) pressed in |
+| `(left/right)_a_touch` | Lower button (A/X) touched by thumb |
+| `(left/right)_b_click` | Upper button (B/Y) pressed in |
+| `(left/right)_b_touch` | Upper Button (B/Y) touched by thumb |
+| `(left/right)_pose_raw` | Raw controller pose returned by SteamVR |
+| `(left/right)_pose_tip` | Pose centered at the controller tip |
+| `(left/right)_pose_base` | Base controller pose returned by SteamVR |
+| `(left/right)_skeleton` | Controller Skeleton (not reliable on Oculus) |
 
 Additionally, there are three actions defined for the headset
 
 | Action name | Description |
 | --- | --- |
-| head_proximity | Proximity sensor, does not appear to work |
-| head_tap | Tap sensing, defined in SteamVR for Oculus, but does not appear to work |
-| head_pose_raw | Pose for the HMD, appears to be X/Z centered when the headset is woken up. Y level is above floor height. |
+| `head_proximity` | Proximity sensor, does not appear to work |
+| `head_tap` | Tap sensing, defined in SteamVR for Oculus, but does not appear to work |
+| `head_pose_raw` | Pose for the HMD, appears to be X/Z centered when the headset is woken up. Y level is relative to floor height. |
 
 Most parameters can be remapped via the SteamVR binding menu, but default bindings are provided. It is preferred to change the configuration file rather than editing SteamVR bindings.
 
@@ -79,21 +81,23 @@ There are five basic types for actions:
 
 | Type | Description |
 | --- | --- |
-| boolean | Does what it says on the box |
-| vector1 | Simple float |
-| vector2 | 2d position, defined in python as a glm.vec2. Elements can be accessed via pos.x and pos.y |
-| pose | Complex data type |
-| skeleton | Complex data type |
+| `boolean` | Does what it says on the box |
+| `vector1` | Simple float |
+| `vector2` | 2d position, defined in python as a glm.vec2. Elements can be accessed via pos.x and pos.y |
+| `pose` | Complex data type |
+| `skeleton` | Complex data type |
 
 Parameters fall into the types as follows:
 | Parameter | Type |
 | --- | --- |
-| xxx_position | vector2 (glm.vec2) (-1.0 <-> 1.0) |
-| xxx_click, xxx_touch | boolean |
-| head_tap, head_proximity | boolean |
-| xxx_pull, xxx_force | vector1 (float) (0.0 <-> 1.0) |
-| xxx_pose_xxx | pose (DevicePose) |
-| xxx_skeleton | skeleton (HandSkeleton) |
+| `xxx_position` | `vector2` (`glm.vec2`) |
+| `xxx_click`, `xxx_touch` | `boolean` |
+| `head_tap`, `head_proximity` | `boolean` |
+| `xxx_pull`, `xxx_force` | `vector1` (`float`) |
+| `xxx_pose_xxx` | `pose` (`DevicePose`) |
+| `xxx_skeleton` | `skeleton` (`HandSkeleton`) |
+
+Position type parameters can very between -1.0 and 1.0, _pull and _force parameters very between 0.0 and 1.0. Pose values have no limits, and skeleton splay and curl vary between 0.0 and 1.0.
 
 ### Pose Type
 
@@ -117,7 +121,7 @@ class DevicePose:
 | velocity | Controller / HMD velocity |
 | angvelocity | Controller / HMD angular velocity, expressed in radians |
 
-All information in the device pose is expressed in metres or radians.
+All units are in metres or radians.
 
 ### Skeleton Type
 
@@ -149,6 +153,8 @@ Params:
 ```
 
 The type of each parameter is automatically determined and must be either a bool, float or an integer.
+
+If no basic parameters are used, the config must include an empty dict: `Params: {}`
 
 ## Custom Parameters
 
@@ -202,6 +208,8 @@ CustomParams:
   - left_pose_tip
 ```
 
+If custom parameters are not used, the config file must include an empty list: `CustomParams: []`
+
 
 # Avatar Setup
 
@@ -223,4 +231,4 @@ You can run this by using ```AdvancedActionsOSC.exe {Arguments}``` in command li
 | -c FILE, --config FILE | loads configuration from the specified file. Default=config.yaml |
 
 # Credit
-- ![I5UCC](https://github.com/I5UCC) for the original code and inspiration.
+- [I5UCC](https://github.com/I5UCC) for the original code and inspiration.
