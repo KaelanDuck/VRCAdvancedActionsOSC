@@ -17,6 +17,8 @@ In Action menu, got to Options>OSC>Enable <br/>
 Then just run the `AdvancedActionsOSC.exe` and you are all set! <br/>
 ## You might need to restart AdvancedActionsOSC.exe or even SteamVR after first run
 
+## Download from the [releases page](https://github.com/KaelanDuck/VRCAdvancedActionsOSC/releases)
+
 # Configuration
 
 Configuration is done via `config.yaml`, it is intended to be largely human readable.
