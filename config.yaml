@@ -1,4 +1,3 @@
----
 IP: 127.0.0.1
 Port: 9000
 
@@ -6,55 +5,28 @@ BindingsFolder: bindings
 ActionManifestFile: thumbparams_actions.json
 ActionSetHandle: /actions/VAA
 
-ConnectedParam: VAA_Active
+# This config creates some suitable parameters
 
-Params: 
-  LeftTrigger       : left_trigger_pull
-  RightTrigger      : right_trigger_pull
-#  LeftGrip          : left_grip_pull
-#  RightGrip         : right_grip_pull
-#  LeftTriggerTouch  : left_trigger_touch
-#  RightTriggerTouch : right_trigger_touch
-#  HeadsetHeight     : head_pose_raw.position.y
-  IndexFingerCurl   : right_skeleton.fingerCurl.index
-  MiddleFingerCurl  : right_skeleton.fingerCurl.middle
-  RingFingerCurl    : right_skeleton.fingerCurl.ring
-  PinkyFingerCurl   : right_skeleton.fingerCurl.pinky
+ConnectedParam: VAA/Active
 
-CustomParams: []
-#- OSCName: ControllerTipDistance
-#  Expression: glm.distance(v[0], v[1])
-#  Actions:
-#  - left_pose_tip.position
-#  - right_pose_tip.position
-#- OSCName: RightControllerToHeadDist
-#  Expression: glm.distance(v[0], v[1])
-#  Actions:
-#  - head_pose_raw.position
-#  - right_pose_tip.position
-#- OSCName: DistanceTip20cm
-#  # vector is 0.2m along the forward axis
-#  # transform using transform matrix for each controller and get distance between
-#  Expression: glm.distance(v[0].matrix * glm.vec4(0,0,-0.2,1), v[1].matrix * glm.vec4(0,0,-0.2,1))
-#  Actions:
-#  - right_pose_tip
-#  - left_pose_tip
-#- OSCName: HeadsetXPos
-#  Expression: v[0].position.x
-#  Actions:
-#  - head_pose_raw
-###################################
-#- OSCName: LeftThumbTouch
-#  Expression: any(v)
-#  Actions:
-#  - left_a_touch
-#  - left_b_touch
-#  - left_trackpad_touch
-#  - left_joystick_touch
-#- OSCName: RightThumbTouch
-#  Expression: any(v)
-#  Actions:
-#  - right_a_touch
-#  - right_b_touch
-#  - right_trackpad_touch
-#  - right_joystick_touch
+Params:
+  VAA/Left/Trigger_Pull: left_trigger_pull
+  VAA/Left/Trigger_Touch: left_trigger_touch
+  VAA/Left/Grip_Pull: left_grip_pull
+  VAA/Right/Trigger_Pull: right_trigger_pull
+  VAA/Right/Trigger_Touch: right_trigger_touch
+  VAA/Right/Grip_Pull: right_grip_pull
+
+CustomParams:
+- OSCName: VAA/Left/Thumb_Touch
+  Expression: any(v)
+  Actions:
+  - left_a_touch
+  - left_b_touch
+  - left_joystick_touch
+- OSCName: VAA/Right/Thumb_Touch
+  Expression: any(v)
+  Actions:
+  - right_a_touch
+  - right_b_touch
+  - right_joystick_touch
