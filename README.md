@@ -5,7 +5,7 @@ Works for both VRChat and ChilloutVR but requires an OSC Mod when used in Chillo
 
 Supports every controller that exposes actions to SteamVR. Including ***Valve-Index*** and ***Oculus(Meta)-Touch*** Controllers. You may need to set the bindings manually for other controllers.
 
-## How to use
+# How to use
 
 Activate OSC in VRChat: <br/><br/>
 ![EnableOSC](https://user-images.githubusercontent.com/43730681/172059335-db3fd6f9-86ae-4f6a-9542-2a74f47ff826.gif)
@@ -13,13 +13,13 @@ Activate OSC in VRChat: <br/><br/>
 In Action menu, got to Options>OSC>Enable <br/>
 
 Then just run the `ThumbParamsOSC.exe` and you are all set! <br/>
-### You might need to restart ThumbParamsOSC.exe or even SteamVR after first run
+## You might need to restart ThumbParamsOSC.exe or even SteamVR after first run
 
-## Configuration
+# Configuration
 
 Configuration is done via `config.yaml`, it is intended to be largely human readable.
 
-### Basic settings
+## Basic settings
 | Key | Value |
 | --- | --- |
 | IP | IP address of OSC client |
@@ -31,11 +31,11 @@ Configuration is done via `config.yaml`, it is intended to be largely human read
 
 When the program runs, it will send the parameter name specified by ConnectedParam to true. You can use that to transition to a different set of animator states when the program runs, for example, to use more complex hand gestures when available.
 
-### Actions and Types
+## Actions and Types
 
 SteamVR actions are defined in `bindings/thumbparams_actions.json` and are used by SteamVR to bind controller actions. This program defined many actions:
 
-#### Actions
+### Actions
 Controllers are defined by `left_xxx` and `right_xxx` action names, for example `left_a_click`.
 
 | Action name | Description |
@@ -69,7 +69,7 @@ Additionally, there are three actions defined for the headset
 
 Most parameters can be remapped via the SteamVR binding menu, but default bindings are provided. It is preferred to change the configuration file rather than editing SteamVR bindings.
 
-#### Types
+### Types
 
 Boolean and float values use pythons basic data types. GLM (OpenGL Mathematics) types are used for some vectors and matrices due to the abundance of useful functions not found in libraries such as numpy.
 
@@ -93,7 +93,7 @@ Parameters fall into the types as follows:
 | xxx_pose_xxx | pose (DevicePose) |
 | xxx_skeleton | skeleton (HandSkeleton) |
 
-#### Pose Type
+### Pose Type
 
 The pose data type is defined by the `DevicePose` class in python and has the following definition:
 
@@ -117,7 +117,7 @@ class DevicePose:
 
 All information in the device pose is expressed in metres or radians.
 
-#### Skeleton Type
+### Skeleton Type
 
 The skeleton data type is relatively simple. SteamVR returns a curl value for each finger, and a splay value for each finger except the thumb. These are stored in a `HandSkeleton` data type where `skelly.fingerCurl` and `skelly.FingerSplay` are the two sets of values, respectively.
 
@@ -125,7 +125,7 @@ Each set of values is stored as a python list of floats with some additional att
 
 Splay data does not include information for the thumb, so the data starts with index zero at the index finger.
 
-### Basic Parameters
+## Basic Parameters
 
 Basic parameters are defined under the root `Params:` key.
 
@@ -148,7 +148,7 @@ Params:
 
 The type of each parameter is automatically determined and must be either a bool, float or an integer.
 
-### Custom Parameters
+## Custom Parameters
 
 Custom parameters are very powerful, and allow you to define arbitrary python expressions to process controller actions into a meaningful avatar parameters.
 
@@ -201,7 +201,7 @@ CustomParams:
 ```
 
 
-## Avatar Setup
+# Avatar Setup
 
 You will need to create avatar parameters corresponding to the names set in the configuration file.
 
@@ -221,4 +221,4 @@ You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
 | -c FILE, --config FILE | loads configuration from the specified file. Default=config.yaml |
 
 # Credit
-- ![benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!
+- ![I5UCC](https://github.com/I5UCC) for the original code and inspiration.
