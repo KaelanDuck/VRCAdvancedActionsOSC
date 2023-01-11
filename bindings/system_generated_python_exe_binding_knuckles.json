@@ -195,6 +195,9 @@
                   },
                   "touch" : {
                      "output" : "/actions/vaa/in/left_trackpad_touch"
+                  },
+                  "click" : {
+                     "output" : "/actions/vaa/in/left_trackpad_click"
                   }
                },
                "mode" : "trackpad",
@@ -231,6 +234,9 @@
                   },
                   "touch" : {
                      "output" : "/actions/vaa/in/right_trackpad_touch"
+                  },
+                  "click" : {
+                     "output" : "/actions/vaa/in/right_trackpad_click"
                   }
                },
                "mode" : "trackpad",
