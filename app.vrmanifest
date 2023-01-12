@@ -1,0 +1,19 @@
+{
+	"source": "builtin",
+	"applications": [
+		{
+			"app_key": "KaelanDuck.VRCAdvancedActionsOSC",
+			"launch_type": "binary",
+			"binary_path_windows": "./AdvancedActionsOSC_NoConsole.exe",
+			"is_dashboard_overlay": true,
+			"action_manifest_path": "./bindings/thumbparams_actions.json",
+
+			"strings": {
+				"en_us": {
+					"name": "VRCAdvancedActionsOSC",
+					"description": "OpenVR VRCAdvancedActionsOSC implementation to send buttons over OSC"
+				}
+			}
+		}
+	]
+}
