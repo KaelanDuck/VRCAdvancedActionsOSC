@@ -1,7 +1,7 @@
 {
    "action_manifest_version" : 0,
    "alias_info" : {},
-   "app_key" : "system.generated.python.exe",
+   "app_key" : "KaelanDuck.VRCAdvancedActionsOSC",
    "bindings" : {
       "/actions/buggy" : {
          "chords" : [],
@@ -195,6 +195,9 @@
                   },
                   "touch" : {
                      "output" : "/actions/vaa/in/left_trackpad_touch"
+                  },
+                  "click" : {
+                     "output" : "/actions/vaa/in/left_trackpad_click"
                   }
                },
                "mode" : "trackpad",
@@ -231,6 +234,9 @@
                   },
                   "touch" : {
                      "output" : "/actions/vaa/in/right_trackpad_touch"
+                  },
+                  "click" : {
+                     "output" : "/actions/vaa/in/right_trackpad_click"
                   }
                },
                "mode" : "trackpad",

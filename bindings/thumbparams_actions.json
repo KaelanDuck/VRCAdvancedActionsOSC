@@ -33,11 +33,19 @@
 			"type" : "boolean"
 		},
 		{
+			"name" : "/actions/VAA/in/left_trackpad_click",
+			"type" : "boolean"
+		},
+		{
 			"name" : "/actions/VAA/in/right_trackpad_position",
 			"type" : "vector2"
 		},
 		{
 			"name" : "/actions/VAA/in/right_trackpad_touch",
+			"type" : "boolean"
+		},
+		{
+			"name" : "/actions/VAA/in/right_trackpad_click",
 			"type" : "boolean"
 		},
 		{

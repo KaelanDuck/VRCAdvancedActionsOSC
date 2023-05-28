@@ -4,6 +4,7 @@ Port: 9000
 BindingsFolder: bindings
 ActionManifestFile: thumbparams_actions.json
 ActionSetHandle: /actions/VAA
+AppManifestFile: app.vrmanifest
 
 # This config creates some suitable parameters
 

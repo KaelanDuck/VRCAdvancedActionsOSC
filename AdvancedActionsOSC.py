@@ -128,6 +128,8 @@ oscClient = udp_client.SimpleUDPClient(IP, PORT)
 # Init OpenVR and Actionsets
 application = openvr.init(openvr.VRApplication_Utility)
 action_path = os.path.join(resource_path(config["BindingsFolder"]), config["ActionManifestFile"])
+appmanifest_path = os.path.join(os.path.join(resource_path(config["AppManifestFile"])))
+openvr.VRApplications().addApplicationManifest(appmanifest_path)
 openvr.VRInput().setActionManifestPath(action_path)
 actionSetHandle = openvr.VRInput().getActionSetHandle(config["ActionSetHandle"])
 actionSetHandleString = config["ActionSetHandle"] + "/in/"
